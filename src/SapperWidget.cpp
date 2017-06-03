@@ -28,6 +28,8 @@ SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
             gameMenu->addAction(restartAction);
             connect(restartAction, SIGNAL(triggered()),
                     sapper, SLOT(restartSlot()));
+            connect(restartAction, SIGNAL(triggered()),
+                    SLOT(restartSlot()));
         }
     }
     {
