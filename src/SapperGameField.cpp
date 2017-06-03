@@ -95,7 +95,10 @@ void SapperGameField::click(const QPoint &point)
             openAll();
             emit bombed();
         }else{
-            openNotMinedNeighbors(point);
+            // Open neighbors only if clicked to free space
+            if(getNeiMines(point) == 0){
+                openNotMinedNeighbors(point);
+            }
             if(allFreeOpened()){
                 flagAllMines();
                 openAll();

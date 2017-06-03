@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    Sapper s(10, 10);
+    Sapper s(8, 10);
     SapperWidget w(&s);
     w.show();
 
