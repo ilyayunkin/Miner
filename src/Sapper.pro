@@ -25,3 +25,6 @@ SOURCES += \
     SapperGameField.cpp \
     SapperFieldWidget.cpp \
     ChampionsTable.cpp
+
+RESOURCES += \
+    icons.qrc

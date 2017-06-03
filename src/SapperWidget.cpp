@@ -4,6 +4,8 @@
 #include <QMenu>
 #include <QAction>
 
+#include <QPixmap>
+
 #include <QTimer>
 
 #include <QVBoxLayout>
@@ -41,6 +43,14 @@ SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
                 flagsEstimationLcd->setFixedHeight(50);
             }
             {
+                smileLabel = new QLabel;
+                QPixmap picture(":/icons/icons/smile-template.png");
+                smileLabel->setPixmap(picture);
+                smileLabel->setFixedSize(QSize(picture.width(),
+                                               picture.height()));
+                heapLayout->addWidget(smileLabel);
+            }
+            {
                 timerLcd = new QLCDNumber;
                 heapLayout->addWidget(timerLcd);
                 timerLcd->setFixedHeight(50);
@@ -59,6 +69,10 @@ SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
 void SapperWidget::bombed()
 {
     QMessageBox::critical(0, "You lose", "You lose");
+    QPixmap picture(":/icons/icons/smile-sad.png");
+    smileLabel->setPixmap(picture);
+    smileLabel->setFixedSize(QSize(picture.width(),
+                                   picture.height()));
 }
 
 void SapperWidget::win()
@@ -66,10 +80,23 @@ void SapperWidget::win()
     QMessageBox::about(0, "You win!", "You win!");
     ChampionsTable table("Ilya Yunkin", "Sapper", 5, false);
     table.setResult(sapper->getTimeSeconds());
+
+    QPixmap picture(":/icons/icons/smile-happy.png");
+    smileLabel->setPixmap(picture);
+    smileLabel->setFixedSize(QSize(picture.width(),
+                                   picture.height()));
 }
 
 void SapperWidget::update()
 {
     flagsEstimationLcd->display(sapper->getEstimatedFlags());
     timerLcd->display(sapper->getTimeSeconds());
+}
+
+void SapperWidget::restartSlot()
+{
+    QPixmap picture(":/icons/icons/smile-template.png");
+    smileLabel->setPixmap(picture);
+    smileLabel->setFixedSize(QSize(picture.width(),
+                                   picture.height()));
 }

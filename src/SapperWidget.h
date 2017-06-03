@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QLCDNumber>
+#include <QLabel>
 
 #include "Sapper.h"
 
@@ -14,6 +15,7 @@ class SapperWidget : public QMainWindow
     long timeSeconds;
     QLCDNumber *flagsEstimationLcd;
     QLCDNumber *timerLcd;
+    QLabel *smileLabel;
 
 public:
     explicit SapperWidget(Sapper *sapper, QWidget *parent = 0);
@@ -27,6 +29,7 @@ private slots:
     void win();
 
     void update();
+    void restartSlot();
 };
 
 #endif // SAPPERWIDGET_H

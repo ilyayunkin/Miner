@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>icons/smile-sad.png</file>
+        <file>icons/smile-happy.png</file>
+        <file>icons/smile-template.png</file>
+    </qresource>
+</RCC>
