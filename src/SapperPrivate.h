@@ -19,6 +19,12 @@ public:
     int getFlagsEstimation();
     void click(const QPoint &point);
 
+    void toggleFlag(const QPoint &point);
+    bool isFlagged(const QPoint &point);
+    bool isOpended(const QPoint &point);
+    bool isMined(const QPoint &point);
+    int getNeiMines(const QPoint &point);
+
 signals:
 
 public slots:

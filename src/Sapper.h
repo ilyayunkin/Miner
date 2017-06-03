@@ -31,6 +31,7 @@ public:
      * @return Returns true if cell were opened.
      */
     bool isOpended(const QPoint &point);
+    bool isMined(const QPoint &point);
     /**
      * @param point - Cell index.
      * @return 0 if cell is not opened or count of mines in 8 neighboring cells.

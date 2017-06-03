@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QLCDNumber>
 
+#include "Sapper.h"
+
 class SapperWidget : public QMainWindow
 {
     Q_OBJECT
@@ -11,8 +13,9 @@ class SapperWidget : public QMainWindow
     long timeSeconds;
     QLCDNumber *flagsEstimationLcd;
     QLCDNumber *timerLcd;
+
 public:
-    explicit SapperWidget(QWidget *parent = 0);
+    explicit SapperWidget(Sapper *sapper, QWidget *parent = 0);
 
 signals:
 

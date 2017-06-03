@@ -13,11 +13,13 @@ HEADERS += \
     Sapper.h \
     SapperWidget.h \
     SapperPrivate.h \
-    SapperGameField.h
+    SapperGameField.h \
+    SapperFieldWidget.h
 
 SOURCES += \
     Sapper.cpp \
     SapperWidget.cpp \
     main.cpp \
     SapperPrivate.cpp \
-    SapperGameField.cpp
+    SapperGameField.cpp \
+    SapperFieldWidget.cpp

@@ -3,10 +3,13 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
+
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-SapperWidget::SapperWidget(QWidget *parent) :
+#include "SapperFieldWidget.h"
+
+SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
     QMainWindow(parent),
     timeSeconds(0)
 {
@@ -34,6 +37,7 @@ SapperWidget::SapperWidget(QWidget *parent) :
                 heapLayout->addWidget(timerLcd);
             }
         }
+        mainLayout->addWidget(new SapperFieldWidget(sapper));
     }
 }
 
