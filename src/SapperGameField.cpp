@@ -170,21 +170,27 @@ void SapperGameField::openAll()
 void SapperGameField::flagAllMines()
 {
     for(int i = 0; i < side * side; i++){
-        if(map[i].mined){
-            map[i].flagged = true;
+        if(map[i].mined && (!map[i].flagged)){
+            toggleFlag(&map[i]);
         }
     }
 }
 
 void SapperGameField::toggleFlag(const QPoint &point)
 {
-    getCell(point)->flagged = !getCell(point)->flagged;
-    if(getCell(point)->flagged){
+    toggleFlag(getCell(point));
+}
+
+void SapperGameField::toggleFlag(FieldCell *cell)
+{
+    cell->flagged = !cell->flagged;
+    if(cell->flagged){
         flags++;
     }else{
         flags--;
     }
 }
+
 
 bool SapperGameField::isFlagged(const QPoint &point)
 {

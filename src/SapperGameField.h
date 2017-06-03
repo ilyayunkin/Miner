@@ -49,6 +49,8 @@ class SapperGameField : public QObject
     bool allFreeOpened();
     FieldCell *getCell(const QPoint &point) const;
 
+    void toggleFlag(FieldCell *cell);
+
 public:
     SapperGameField(int side, int mines, const QPoint &freeCell,
                     QObject *parent = 0);
