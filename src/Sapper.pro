@@ -14,7 +14,8 @@ HEADERS += \
     SapperWidget.h \
     SapperPrivate.h \
     SapperGameField.h \
-    SapperFieldWidget.h
+    SapperFieldWidget.h \
+    ChampionsTable.h
 
 SOURCES += \
     Sapper.cpp \
@@ -22,4 +23,5 @@ SOURCES += \
     main.cpp \
     SapperPrivate.cpp \
     SapperGameField.cpp \
-    SapperFieldWidget.cpp
+    SapperFieldWidget.cpp \
+    ChampionsTable.cpp

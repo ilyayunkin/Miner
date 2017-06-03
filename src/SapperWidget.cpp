@@ -12,6 +12,7 @@
 #include <QMessageBox>
 
 #include "SapperFieldWidget.h"
+#include "ChampionsTable.h"
 
 SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
     QMainWindow(parent),
@@ -63,6 +64,8 @@ void SapperWidget::bombed()
 void SapperWidget::win()
 {
     QMessageBox::about(0, "You win!", "You win!");
+    ChampionsTable table("Ilya Yunkin", "Sapper", 5, false);
+    table.setResult(sapper->getTimeSeconds());
 }
 
 void SapperWidget::update()
