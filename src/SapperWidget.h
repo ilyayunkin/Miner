@@ -22,8 +22,8 @@ signals:
 public slots:
 
 private slots:
-    void restartClicked();
-
+    void bombed();
+    void win();
 };
 
 #endif // SAPPERWIDGET_H

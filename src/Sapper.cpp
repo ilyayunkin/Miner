@@ -4,8 +4,12 @@
 
 Sapper::Sapper(int side, int mines, QObject *parent) :
     QObject(parent),
+    side(side),
+    mines(mines),
     privateMembers(new SapperPrivate(side, mines, this))
 {
+    connect(privateMembers, SIGNAL(bombed()), SIGNAL(bombed()));
+    connect(privateMembers, SIGNAL(win()), SIGNAL(win()));
 }
 
 int Sapper::getSide()
@@ -46,4 +50,12 @@ bool Sapper::isMined(const QPoint &point)
 int Sapper::getNeighborMines(const QPoint &point)
 {
     return privateMembers->getNeiMines(point);
+}
+
+void Sapper::restartSlot()
+{
+    delete privateMembers;
+    privateMembers = new SapperPrivate(side, mines, this);
+    connect(privateMembers, SIGNAL(bombed()), SIGNAL(bombed()));
+    connect(privateMembers, SIGNAL(win()), SIGNAL(win()));
 }

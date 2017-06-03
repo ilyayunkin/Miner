@@ -17,8 +17,8 @@ public:
     explicit SapperPrivate(int side, int mines, QObject *parent = 0);
     int getSide();
     int getFlagsEstimation();
-    void click(const QPoint &point);
 
+    void click(const QPoint &point);
     void toggleFlag(const QPoint &point);
     bool isFlagged(const QPoint &point);
     bool isOpended(const QPoint &point);
@@ -26,6 +26,8 @@ public:
     int getNeiMines(const QPoint &point);
 
 signals:
+    void bombed();
+    void win();
 
 public slots:
 

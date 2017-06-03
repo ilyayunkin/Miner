@@ -20,6 +20,7 @@ SapperFieldWidget::SapperFieldWidget(Sapper *sapper, QWidget *parent) :
     connect(timer, SIGNAL(timeout()), SLOT(update()));
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setMinimumSize(500, 500);
 }
 
 void SapperFieldWidget::paintEvent(QPaintEvent *e)
@@ -33,7 +34,9 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
         for(int col = 0; col < sapper->getSide(); col++){
             QPoint point(col, row);
 
-            if(sapper->isOpended(point)){
+            if(sapper->isFlagged(point)){
+                p.setBrush(Qt::yellow);
+            }else if(sapper->isOpended(point)){
                 p.setBrush(Qt::cyan);
                 if(sapper->isMined(point)){
                     p.setBrush(Qt::red);
@@ -42,6 +45,7 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
                 }
             }else{
                 p.setBrush(QBrush());
+
             }
             int x = cellWidth * col;
             int y = cellWidth * row;
@@ -105,8 +109,14 @@ void SapperFieldWidget::mouseReleaseEvent(QMouseEvent *e)
     bool onField = (col >= 0) && (col < sapper->getSide()) &&
             (row >= 0) && (row < sapper->getSide());
 
+    QPoint cell(col, row);
+
     if(onField){
-        sapper->click(QPoint(col, row));
+        if(e->button() == Qt::LeftButton){
+            sapper->click(cell);
+        }else if(e->button() == Qt::RightButton){
+            sapper->toggleFlag(cell);
+        }
     }
 }
 

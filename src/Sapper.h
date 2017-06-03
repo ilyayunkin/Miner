@@ -10,6 +10,8 @@ class Sapper : public QObject
 {
     Q_OBJECT
 
+    const int side;
+    const int mines;
     SapperPrivate *privateMembers;
 public:
     Sapper(int side, int mines, QObject *parent = 0);
@@ -38,8 +40,11 @@ public:
      */
     int getNeighborMines(const QPoint &point);
 signals:
+    bool bombed();
+    void win();
 
 public slots:
+    void restartSlot();
 
 };
 

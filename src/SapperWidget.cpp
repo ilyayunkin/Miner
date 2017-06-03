@@ -7,6 +7,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
+#include <QMessageBox>
+
 #include "SapperFieldWidget.h"
 
 SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
@@ -18,7 +20,8 @@ SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
         {
             QAction *restartAction = new QAction("Restart", this);
             gameMenu->addAction(restartAction);
-            connect(restartAction, SIGNAL(triggered()), SLOT(restartClicked()));
+            connect(restartAction, SIGNAL(triggered()),
+                    sapper, SLOT(restartSlot()));
         }
     }
     {
@@ -31,17 +34,28 @@ SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
             {
                 flagsEstimationLcd = new QLCDNumber;
                 heapLayout->addWidget(flagsEstimationLcd);
+                flagsEstimationLcd->setFixedHeight(50);
+                flagsEstimationLcd->hide();
             }
             {
                 timerLcd = new QLCDNumber;
                 heapLayout->addWidget(timerLcd);
+                timerLcd->setFixedHeight(50);
+                timerLcd->hide();
             }
         }
         mainLayout->addWidget(new SapperFieldWidget(sapper));
     }
+    connect(sapper, SIGNAL(bombed()), SLOT(bombed()));
+    connect(sapper, SIGNAL(win()), SLOT(win()));
 }
 
-void SapperWidget::restartClicked()
+void SapperWidget::bombed()
 {
+    QMessageBox::critical(0, "You lose", "You lose");
+}
 
+void SapperWidget::win()
+{
+    QMessageBox::about(0, "You win!", "You win!");
 }

@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QPoint>
+#include <QList>
+#include <QQueue>
 
 #include <random>
 
@@ -30,6 +32,17 @@ class SapperGameField : public QObject
     void markNeighbors(const QPoint &point);
     void markNeighbor(const QPoint &point);
     void openNotMinedNeighbors(const QPoint &point);
+    bool exists(const QPoint &point);
+
+    void enqueueNeighbors(const QPoint &point,
+                      QQueue<QPoint> &queue,
+                      QList<QPoint> &openedList);
+    void enqueueNeighbor(const QPoint &point,
+                      QQueue<QPoint> &queue,
+                      QList<QPoint> &openedList);
+
+    void openAll();
+    bool allFreeOpened();
 
 public:
     SapperGameField(int side, int mines, const QPoint &freeCell,
@@ -38,8 +51,15 @@ public:
 
     FieldCell *getCell(const QPoint &point) const;
     void click(const QPoint &point);
+    void toggleFlag(const QPoint &point);
+    bool isFlagged(const QPoint &point);
+    bool isOpended(const QPoint &point);
+    bool isMined(const QPoint &point);
+    int getNeiMines(const QPoint &point);
 
 signals:
+    void bombed();
+    void win();
 
 public slots:
 

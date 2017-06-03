@@ -23,6 +23,8 @@ void SapperPrivate::click(const QPoint &point)
 {
     if(gameField == NULL){
         gameField = new SapperGameField(side, mines, point, this);
+        connect(gameField, SIGNAL(bombed()), SIGNAL(bombed()));
+        connect(gameField, SIGNAL(win()), SIGNAL(win()));
     }else{
         // Field already exists
     }
@@ -32,12 +34,19 @@ void SapperPrivate::click(const QPoint &point)
 
 void SapperPrivate::toggleFlag(const QPoint &point)
 {
-    /// ???
+    if(gameField == NULL){
+    }else{
+        gameField->toggleFlag(point);
+    }
 }
 
 bool SapperPrivate::isFlagged(const QPoint &point)
 {
-    /// ???
+    if(gameField == NULL){
+        return false;
+    }else{
+        return gameField->isFlagged(point);
+    }
 }
 
 bool SapperPrivate::isOpended(const QPoint &point)
@@ -45,7 +54,7 @@ bool SapperPrivate::isOpended(const QPoint &point)
     if(gameField == NULL){
         return false;
     }else{
-        return gameField->getCell(point)->opened;
+        return gameField->isOpended(point);
     }
 }
 
@@ -54,12 +63,7 @@ bool SapperPrivate::isMined(const QPoint &point)
     if(gameField == NULL){
         return false;
     }else{
-        FieldCell *cell = gameField->getCell(point);
-        if(!cell->opened){
-            return false;
-        }else{
-            return cell->mined;
-        }
+        return gameField->isMined(point);
     }
 }
 
@@ -68,11 +72,6 @@ int SapperPrivate::getNeiMines(const QPoint &point)
     if(gameField == NULL){
         return 0;
     }else{
-        FieldCell *cell = gameField->getCell(point);
-        if(!cell->opened){
-            return 0;
-        }else{
-            return cell->neiMined;
-        }
+        return gameField->getNeiMines(point);
     }
 }
