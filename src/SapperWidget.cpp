@@ -66,6 +66,8 @@ SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
     QTimer *timer = new QTimer(this);
     timer->start(100);
     connect(timer, SIGNAL(timeout()), SLOT(update()));
+
+    setWindowIcon(QIcon(":/icons/icons/boom.png"));
 }
 
 void SapperWidget::bombed()
