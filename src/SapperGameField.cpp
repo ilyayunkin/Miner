@@ -11,7 +11,9 @@ SapperGameField::SapperGameField(int side, int mines, const QPoint &freeCell,
                                  QObject *parent) :
     QObject(parent),
     randomEngine(time(NULL)),
-    side(side)
+    side(side),
+    mines(mines),
+    flags(0)
 {
     map = new FieldCell[side * side];
 
@@ -95,6 +97,8 @@ void SapperGameField::click(const QPoint &point)
         }else{
             openNotMinedNeighbors(point);
             if(allFreeOpened()){
+                flagAllMines();
+                openAll();
                 emit win();
             }
         }
@@ -163,10 +167,23 @@ void SapperGameField::openAll()
     }
 }
 
+void SapperGameField::flagAllMines()
+{
+    for(int i = 0; i < side * side; i++){
+        if(map[i].mined){
+            map[i].flagged = true;
+        }
+    }
+}
 
 void SapperGameField::toggleFlag(const QPoint &point)
 {
     getCell(point)->flagged = !getCell(point)->flagged;
+    if(getCell(point)->flagged){
+        flags++;
+    }else{
+        flags--;
+    }
 }
 
 bool SapperGameField::isFlagged(const QPoint &point)
@@ -197,4 +214,9 @@ int SapperGameField::getNeiMines(const QPoint &point)
     }else{
         return cell->neiMined;
     }
+}
+
+int SapperGameField::getEstimatedFlags()
+{
+    return mines - flags;
 }

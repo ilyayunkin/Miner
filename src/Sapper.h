@@ -16,7 +16,6 @@ class Sapper : public QObject
 public:
     Sapper(int side, int mines, QObject *parent = 0);
     int getSide();
-    int getFlagsEstimation();
     void click(const QPoint &point);
     /**
      * @brief Sets flag to specified cell.
@@ -39,6 +38,9 @@ public:
      * @return 0 if cell is not opened or count of mines in 8 neighboring cells.
      */
     int getNeighborMines(const QPoint &point);
+
+    int getEstimatedFlags();
+    int getTimeSeconds();
 signals:
     bool bombed();
     void win();

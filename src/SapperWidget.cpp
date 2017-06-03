@@ -4,6 +4,8 @@
 #include <QMenu>
 #include <QAction>
 
+#include <QTimer>
+
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
@@ -13,6 +15,7 @@
 
 SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
     QMainWindow(parent),
+    sapper(sapper),
     timeSeconds(0)
 {
     {
@@ -35,19 +38,21 @@ SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
                 flagsEstimationLcd = new QLCDNumber;
                 heapLayout->addWidget(flagsEstimationLcd);
                 flagsEstimationLcd->setFixedHeight(50);
-                flagsEstimationLcd->hide();
             }
             {
                 timerLcd = new QLCDNumber;
                 heapLayout->addWidget(timerLcd);
                 timerLcd->setFixedHeight(50);
-                timerLcd->hide();
             }
         }
         mainLayout->addWidget(new SapperFieldWidget(sapper));
     }
     connect(sapper, SIGNAL(bombed()), SLOT(bombed()));
     connect(sapper, SIGNAL(win()), SLOT(win()));
+
+    QTimer *timer = new QTimer(this);
+    timer->start(100);
+    connect(timer, SIGNAL(timeout()), SLOT(update()));
 }
 
 void SapperWidget::bombed()
@@ -58,4 +63,10 @@ void SapperWidget::bombed()
 void SapperWidget::win()
 {
     QMessageBox::about(0, "You win!", "You win!");
+}
+
+void SapperWidget::update()
+{
+    flagsEstimationLcd->display(sapper->getEstimatedFlags());
+    timerLcd->display(sapper->getTimeSeconds());
 }

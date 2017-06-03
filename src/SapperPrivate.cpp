@@ -1,11 +1,15 @@
 #include "SapperPrivate.h"
 
+#include <assert.h>
+
 SapperPrivate::SapperPrivate(int side, int mines, QObject *parent) :
     QObject(parent),
     side(side),
     mines(mines),
-    minesEstimation(mines),
-    gameField(NULL)
+    time(0),
+    gameField(NULL),
+    startTime(QDateTime::currentDateTime()),
+    timer(NULL)
 {
 }
 
@@ -14,17 +18,25 @@ int SapperPrivate::getSide()
     return side;
 }
 
-int SapperPrivate::getFlagsEstimation()
+int SapperPrivate::getEstimatedFlags()
 {
-    return minesEstimation;
+    if(gameField == NULL){
+        return mines;
+    }else{
+        return gameField->getEstimatedFlags();
+    }
 }
 
 void SapperPrivate::click(const QPoint &point)
 {
     if(gameField == NULL){
         gameField = new SapperGameField(side, mines, point, this);
-        connect(gameField, SIGNAL(bombed()), SIGNAL(bombed()));
-        connect(gameField, SIGNAL(win()), SIGNAL(win()));
+        connect(gameField, SIGNAL(bombed()), SLOT(bombedSlot()));
+        connect(gameField, SIGNAL(win()), SLOT(winSlot()));
+
+        timer = new QTimer(this);
+        timer->start(100);
+        connect(timer, SIGNAL(timeout()), SLOT(update()));
     }else{
         // Field already exists
     }
@@ -74,4 +86,28 @@ int SapperPrivate::getNeiMines(const QPoint &point)
     }else{
         return gameField->getNeiMines(point);
     }
+}
+
+int SapperPrivate::getTimeSeconds()
+{
+    return time;
+}
+
+void SapperPrivate::update()
+{
+    time = startTime.secsTo(QDateTime::currentDateTime());
+}
+
+void SapperPrivate::bombedSlot()
+{
+    assert(timer != NULL);
+    timer->stop();
+    emit bombed();
+}
+
+void SapperPrivate::winSlot()
+{
+    assert(timer != NULL);
+    timer->stop();
+    emit win();
 }

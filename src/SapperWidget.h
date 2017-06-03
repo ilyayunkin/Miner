@@ -10,6 +10,7 @@ class SapperWidget : public QMainWindow
 {
     Q_OBJECT
 
+    Sapper * sapper;
     long timeSeconds;
     QLCDNumber *flagsEstimationLcd;
     QLCDNumber *timerLcd;
@@ -24,6 +25,8 @@ public slots:
 private slots:
     void bombed();
     void win();
+
+    void update();
 };
 
 #endif // SAPPERWIDGET_H

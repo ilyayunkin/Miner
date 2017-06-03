@@ -24,6 +24,8 @@ class SapperGameField : public QObject
 
     std::default_random_engine randomEngine;
     int side;
+    int mines;
+    int flags;
     FieldCell *map;
 
     QPoint randomPoint();
@@ -42,14 +44,16 @@ class SapperGameField : public QObject
                       QList<QPoint> &openedList);
 
     void openAll();
+    void flagAllMines();
+
     bool allFreeOpened();
+    FieldCell *getCell(const QPoint &point) const;
 
 public:
     SapperGameField(int side, int mines, const QPoint &freeCell,
                     QObject *parent = 0);
     ~SapperGameField();
 
-    FieldCell *getCell(const QPoint &point) const;
     void click(const QPoint &point);
     void toggleFlag(const QPoint &point);
     bool isFlagged(const QPoint &point);
@@ -57,6 +61,7 @@ public:
     bool isMined(const QPoint &point);
     int getNeiMines(const QPoint &point);
 
+    int getEstimatedFlags();
 signals:
     void bombed();
     void win();

@@ -17,10 +17,16 @@ int Sapper::getSide()
     return privateMembers->getSide();
 }
 
-int Sapper::getFlagsEstimation()
+int Sapper::getEstimatedFlags()
 {
-    return privateMembers->getFlagsEstimation();
+    return privateMembers->getEstimatedFlags();
 }
+
+int Sapper::getTimeSeconds()
+{
+    return privateMembers->getTimeSeconds();
+}
+
 
 void Sapper::click(const QPoint &point)
 {

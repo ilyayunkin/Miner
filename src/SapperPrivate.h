@@ -2,6 +2,9 @@
 #define SAPPERPRIVATE_H
 
 #include <QObject>
+#include <QDateTime>
+#include <QTimer>
+
 #include "SapperGameField.h"
 
 class SapperPrivate : public QObject
@@ -10,13 +13,17 @@ class SapperPrivate : public QObject
 
     const int side;
     const int mines;
-    const int minesEstimation;
+
+    int time;
     SapperGameField *gameField;
+    QDateTime startTime;
+
+    QTimer *timer;
 
 public:
     explicit SapperPrivate(int side, int mines, QObject *parent = 0);
     int getSide();
-    int getFlagsEstimation();
+    int getEstimatedFlags();
 
     void click(const QPoint &point);
     void toggleFlag(const QPoint &point);
@@ -25,11 +32,16 @@ public:
     bool isMined(const QPoint &point);
     int getNeiMines(const QPoint &point);
 
+    int getTimeSeconds();
+
 signals:
     void bombed();
     void win();
 
-public slots:
+private slots:
+    void update();
+    void bombedSlot();
+    void winSlot();
 
 };
 
