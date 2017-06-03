@@ -71,10 +71,6 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
 
         }
     }
-    QFont f;
-    f.setPixelSize(plotWidth / 100 * 4);
-    p.setPen(Qt::black);
-    p.setFont(f);
 }
 
 void SapperFieldWidget::resizeEvent(QResizeEvent * event)
