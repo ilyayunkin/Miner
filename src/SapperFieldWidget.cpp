@@ -37,14 +37,13 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
             if(sapper->isFlagged(point)){
                 p.setBrush(Qt::yellow);
             }else if(sapper->isOpended(point)){
-                p.setBrush(Qt::cyan);
                 if(sapper->isMined(point)){
                     p.setBrush(Qt::red);
                 }else{
-                    p.setBrush(Qt::cyan);
+                    p.setBrush(Qt::transparent);
                 }
             }else{
-                p.setBrush(QBrush());
+                p.setBrush(Qt::lightGray);
 
             }
             int x = cellWidth * col;
