@@ -11,10 +11,9 @@ SapperFieldWidget::SapperFieldWidget(Sapper *sapper, QWidget *parent) :
     sapper(sapper),
     plotToWidgetScale(0),
     widgetToPlotScale(0),
-    horizontalBorder(0),
-    verticalBorder(0),
+    border(2),
     cellWidth(32),
-    plotWidth(cellWidth * sapper->getSide())
+    plotWidth(cellWidth * sapper->getSide() + border * 2)
 {
     QTimer *timer = new QTimer(this);
     timer->start(100);
@@ -29,7 +28,7 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
     Q_UNUSED(e);
     QPainter p(this);
     p.scale(plotToWidgetScale, plotToWidgetScale);
-    p.translate(horizontalBorder, verticalBorder);
+    p.translate(border, border);
 
     for(int row = 0; row < sapper->getSide(); row++){
         for(int col = 0; col < sapper->getSide(); col++){
@@ -91,16 +90,12 @@ void SapperFieldWidget::resizeEvent(QResizeEvent * event)
 
     widgetToPlotScale = float(plotWidth) / side;
     plotToWidgetScale = float(side) / plotWidth;
-    horizontalBorder = (w / plotToWidgetScale -
-                        cellWidth * sapper->getSide())/ 2;
-    verticalBorder = (h / plotToWidgetScale -
-                      cellWidth * sapper->getSide())/ 2;
 }
 
 void SapperFieldWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-    int xOnPlot = e->pos().x() * widgetToPlotScale - horizontalBorder;
-    int yOnPlot = e->pos().y() * widgetToPlotScale - verticalBorder;
+    int xOnPlot = e->pos().x() * widgetToPlotScale - border;
+    int yOnPlot = e->pos().y() * widgetToPlotScale - border;
 
     int col = xOnPlot / cellWidth;
     int row = yOnPlot / cellWidth;
