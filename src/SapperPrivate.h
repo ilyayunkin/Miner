@@ -30,6 +30,7 @@ public:
     bool isFlagged(const QPoint &point);
     bool isOpended(const QPoint &point);
     bool isMined(const QPoint &point);
+    bool isExploded(const QPoint &point);
     int getNeiMines(const QPoint &point);
 
     int getTimeSeconds();

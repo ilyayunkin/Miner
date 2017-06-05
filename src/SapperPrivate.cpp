@@ -79,6 +79,15 @@ bool SapperPrivate::isMined(const QPoint &point)
     }
 }
 
+bool SapperPrivate::isExploded(const QPoint &point)
+{
+    if(gameField == NULL){
+        return false;
+    }else{
+        return gameField->isExploded(point);
+    }
+}
+
 int SapperPrivate::getNeiMines(const QPoint &point)
 {
     if(gameField == NULL){

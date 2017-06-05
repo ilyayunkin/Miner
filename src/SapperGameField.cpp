@@ -3,7 +3,7 @@
 #include <time.h>
 
 FieldCell::FieldCell() :
-    mined(false), neiMined(0), flagged(false), opened(false)
+    mined(false), neiMined(0), flagged(false), opened(false), bombed(false)
 {
 }
 
@@ -92,6 +92,7 @@ void SapperGameField::click(const QPoint &point)
         cell->opened = true;
 
         if(cell->mined){
+            cell->bombed = true;
             openAll();
             emit bombed();
         }else{
@@ -101,7 +102,6 @@ void SapperGameField::click(const QPoint &point)
             }
             if(allFreeOpened()){
                 flagAllMines();
-                openAll();
                 emit win();
             }
         }
@@ -212,6 +212,16 @@ bool SapperGameField::isMined(const QPoint &point)
         return false;
     }else{
         return cell->mined;
+    }
+}
+
+bool SapperGameField::isExploded(const QPoint &point)
+{
+    FieldCell *cell = getCell(point);
+    if(!cell->opened){
+        return false;
+    }else{
+        return cell->bombed;
     }
 }
 

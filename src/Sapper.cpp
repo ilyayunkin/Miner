@@ -53,6 +53,11 @@ bool Sapper::isMined(const QPoint &point)
     return privateMembers->isMined(point);
 }
 
+bool Sapper::isExploded(const QPoint &point)
+{
+    return privateMembers->isExploded(point);
+}
+
 int Sapper::getNeighborMines(const QPoint &point)
 {
     return privateMembers->getNeiMines(point);

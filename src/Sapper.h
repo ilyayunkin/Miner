@@ -33,6 +33,7 @@ public:
      */
     bool isOpended(const QPoint &point);
     bool isMined(const QPoint &point);
+    bool isExploded(const QPoint &point);
     /**
      * @param point - Cell index.
      * @return 0 if cell is not opened or count of mines in 8 neighboring cells.

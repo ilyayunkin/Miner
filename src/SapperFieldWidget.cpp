@@ -46,7 +46,11 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
 
             if(sapper->isOpended(point)){
                 if(sapper->isMined(point)){
-                    drawMine(p, x, y);
+                    if(sapper->isExploded(point)){
+                        drawExplosion(p, x, y);
+                    }else{
+                        drawMine(p, x, y);
+                    }
                 }else{
                     QFont f;
                     f.setPixelSize(plotWidth / 100 * 4);
@@ -59,6 +63,9 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
                     }
                 }
             }
+            if(sapper->isFlagged(point)){
+                drawFlag(p, x, y);
+            }
         }
     }
 }
@@ -68,11 +75,7 @@ QColor SapperFieldWidget::getCellColor(const QPoint &point)
     if(sapper->isFlagged(point)){
         return Qt::yellow;
     }else if(sapper->isOpended(point)){
-        if(sapper->isMined(point)){
-            return Qt::red;
-        }else{
             return Qt::transparent;
-        }
     }else{
         return Qt::lightGray;
     }
@@ -116,16 +119,17 @@ void SapperFieldWidget::mouseReleaseEvent(QMouseEvent *e)
     }
 }
 
+void SapperFieldWidget::drawExplosion(QPainter &p, int x, int y)
+{
+    p.drawPixmap(QRect(x, y, cellWidth, cellWidth), QPixmap(":/icons/icons/boom.png"));
+}
+
 void SapperFieldWidget::drawMine(QPainter &p, int x, int y)
 {
-    p.setBrush(Qt::black);
+    p.drawPixmap(QRect(x, y, cellWidth, cellWidth), QPixmap(":/icons/icons/mine.png"));
+}
 
-    float rectSide = cellWidth * 0.8;
-    float spanSize = cellWidth / 2 - rectSide / 2;
-    QPointF upLeft(x + spanSize, y + spanSize);
-    QPointF downRight(x + spanSize + rectSide, y + spanSize + rectSide);
-
-    QRectF elementRect(upLeft,downRight);
-
-    p.drawEllipse(elementRect);
+void SapperFieldWidget::drawFlag(QPainter &p, int x, int y)
+{
+    p.drawPixmap(QRect(x, y, cellWidth, cellWidth), QPixmap(":/icons/icons/red-flag.png"));
 }

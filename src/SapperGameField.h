@@ -14,6 +14,7 @@ struct FieldCell
     short neiMined;
     bool flagged;
     bool opened;
+    bool bombed;
 
     FieldCell();
 };
@@ -61,6 +62,7 @@ public:
     bool isFlagged(const QPoint &point);
     bool isOpended(const QPoint &point);
     bool isMined(const QPoint &point);
+    bool isExploded(const QPoint &point);
     int getNeiMines(const QPoint &point);
 
     int getEstimatedFlags();
