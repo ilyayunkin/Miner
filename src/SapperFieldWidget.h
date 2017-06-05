@@ -14,7 +14,9 @@ class SapperFieldWidget : public QWidget
     float plotToWidgetScale;
     float widgetToPlotScale;
 
-    const int border;
+    int horizontalBorder;
+    int verticalBorder;
+
     /**
      * @brief Pixels count in side of one cell rect
      */
