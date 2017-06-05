@@ -11,13 +11,15 @@ class SapperFieldWidget : public QWidget
 
     Sapper *sapper;
 
-    int side;
     float plotToWidgetScale;
     float widgetToPlotScale;
 
     int horizontalBorder;
     int verticalBorder;
 
+    /**
+     * @brief Pixels count in smaller side of widget
+     */
     const int plotWidth;
     int cellWidth;
 

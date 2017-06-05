@@ -4,10 +4,11 @@
 #include <QTimer>
 #include <QMouseEvent>
 
+#include <algorithm>
+
 SapperFieldWidget::SapperFieldWidget(Sapper *sapper, QWidget *parent) :
     QWidget(parent),
     sapper(sapper),
-    side(0),
     plotToWidgetScale(0),
     widgetToPlotScale(0),
     horizontalBorder(0),
@@ -78,13 +79,10 @@ void SapperFieldWidget::resizeEvent(QResizeEvent * event)
     int h = event->size().height();
     int w = event->size().width();
 
-    if((float(h) / w) < 1){
-        side = h;
-        cellWidth = float(plotWidth) / sapper->getSide();
-    }else{
-        side = w;
-        cellWidth = float(plotWidth) / sapper->getSide();
-    }
+    int side = std::min(h, w);
+
+    cellWidth = float(plotWidth) / sapper->getSide();
+
     widgetToPlotScale = float(plotWidth) / side;
     plotToWidgetScale = float(side) / plotWidth;
     horizontalBorder = (w / plotToWidgetScale -
