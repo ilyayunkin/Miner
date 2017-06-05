@@ -52,10 +52,10 @@ void SapperPrivate::toggleFlag(const QPoint &point)
     }
 }
 
-bool SapperPrivate::isFlagged(const QPoint &point)
+Flag::FlagState SapperPrivate::isFlagged(const QPoint &point)
 {
     if(gameField == NULL){
-        return false;
+        return Flag::NO;
     }else{
         return gameField->isFlagged(point);
     }

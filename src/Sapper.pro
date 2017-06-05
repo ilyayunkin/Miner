@@ -15,7 +15,8 @@ HEADERS += \
     SapperPrivate.h \
     SapperGameField.h \
     SapperFieldWidget.h \
-    ChampionsTable.h
+    ChampionsTable.h \
+    FlagState.h
 
 SOURCES += \
     Sapper.cpp \

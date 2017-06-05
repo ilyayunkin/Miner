@@ -38,7 +38,7 @@ void Sapper::toggleFlag(const QPoint &point)
     privateMembers->toggleFlag(point);
 }
 
-bool Sapper::isFlagged(const QPoint &point)
+Flag::FlagState Sapper::isFlagged(const QPoint &point)
 {
     return privateMembers->isFlagged(point);
 }

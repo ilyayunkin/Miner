@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QPoint>
 
+#include "FlagState.h"
+
 class SapperPrivate;
 
 class Sapper : public QObject
@@ -26,7 +28,7 @@ public:
      * @param point - Cell index.
      * @return true if flag seted to this cell.
      */
-    bool isFlagged(const QPoint &point);
+    Flag::FlagState isFlagged(const QPoint &point);
     /**
      * @param point - Cell index.
      * @return Returns true if cell were opened.

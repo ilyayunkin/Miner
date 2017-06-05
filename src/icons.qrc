@@ -6,5 +6,6 @@
         <file>icons/boom.png</file>
         <file>icons/red-flag.png</file>
         <file>icons/mine.png</file>
+        <file>icons/doubt-flag.png</file>
     </qresource>
 </RCC>

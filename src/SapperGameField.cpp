@@ -1,9 +1,10 @@
 #include "SapperGameField.h"
 
 #include <time.h>
+#include <assert.h>
 
 FieldCell::FieldCell() :
-    mined(false), neiMined(0), flagged(false), opened(false), bombed(false)
+    mined(false), neiMined(0), flag(Flag::NO), opened(false), bombed(false)
 {
 }
 
@@ -151,7 +152,7 @@ void SapperGameField::openAll()
 void SapperGameField::flagAllMines()
 {
     for(int i = 0; i < side * side; i++){
-        if(map[i].mined && (!map[i].flagged)){
+        if(map[i].mined && (!map[i].flag)){
             toggleFlag(&map[i]);
         }
     }
@@ -165,11 +166,17 @@ void SapperGameField::toggleFlag(const QPoint &point)
 void SapperGameField::toggleFlag(FieldCell *cell)
 {
     if(gameContinues){
-        cell->flagged = !cell->flagged;
-        if(cell->flagged){
+        switch (cell->flag) {
+        case Flag::NO: cell->flag = Flag::MINE;
             flags++;
-        }else{
+            break;
+        case Flag::MINE: cell->flag = Flag::DOUBT;
             flags--;
+            break;
+        case Flag::DOUBT: cell->flag = Flag::NO;
+            break;
+        default: assert(false);
+            break;
         }
     }
 }
@@ -201,9 +208,9 @@ void SapperGameField::click(const QPoint &point)
     }
 }
 
-bool SapperGameField::isFlagged(const QPoint &point)
+Flag::FlagState SapperGameField::isFlagged(const QPoint &point)
 {
-    return getCell(point)->flagged;
+    return getCell(point)->flag;
 }
 
 bool SapperGameField::isOpended(const QPoint &point)

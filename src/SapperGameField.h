@@ -8,11 +8,13 @@
 
 #include <random>
 
+#include "FlagState.h"
+
 struct FieldCell
 {
     bool mined;
     short neiMined;
-    bool flagged;
+    Flag::FlagState flag;
     bool opened;
     bool bombed;
 
@@ -67,7 +69,7 @@ public:
 
     void click(const QPoint &point);
     void toggleFlag(const QPoint &point);
-    bool isFlagged(const QPoint &point);
+    Flag::FlagState isFlagged(const QPoint &point);
     bool isOpended(const QPoint &point);
     bool isMined(const QPoint &point);
     bool isExploded(const QPoint &point);

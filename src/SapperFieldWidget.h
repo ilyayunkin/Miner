@@ -32,7 +32,8 @@ class SapperFieldWidget : public QWidget
 
     void drawMine(QPainter &p, int x, int y);
     void drawExplosion(QPainter &p, int x, int y);
-    void drawFlag(QPainter &p, int x, int y);
+    void drawMineFlag(QPainter &p, int x, int y);
+    void drawDoubtFlag(QPainter &p, int x, int y);
 
     QColor getCellColor(const QPoint &point);
 

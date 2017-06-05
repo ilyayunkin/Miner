@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 
 #include <algorithm>
+#include <assert.h>
 
 SapperFieldWidget::SapperFieldWidget(Sapper *sapper, QWidget *parent) :
     QWidget(parent),
@@ -13,7 +14,7 @@ SapperFieldWidget::SapperFieldWidget(Sapper *sapper, QWidget *parent) :
     widgetToPlotScale(0),
     horizontalBorder(0),
     verticalBorder(0),
-    cellWidth(32),
+    cellWidth(64),
     plotWidth(cellWidth * sapper->getSide())
 {
     QTimer *timer = new QTimer(this);
@@ -63,8 +64,15 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
                     }
                 }
             }
-            if(sapper->isFlagged(point)){
-                drawFlag(p, x, y);
+            switch (sapper->isFlagged(point)) {
+            case Flag::NO: // Nothing to do
+                break;
+            case Flag::MINE:drawMineFlag(p, x, y);
+                break;
+            case Flag::DOUBT:drawDoubtFlag(p, x, y);
+                break;
+            default: assert(false);
+                break;
             }
         }
     }
@@ -121,15 +129,24 @@ void SapperFieldWidget::mouseReleaseEvent(QMouseEvent *e)
 
 void SapperFieldWidget::drawExplosion(QPainter &p, int x, int y)
 {
-    p.drawPixmap(QRect(x, y, cellWidth, cellWidth), QPixmap(":/icons/icons/boom.png"));
+    p.drawPixmap(QRect(x, y, cellWidth, cellWidth),
+                 QPixmap(":/icons/icons/boom.png"));
 }
 
 void SapperFieldWidget::drawMine(QPainter &p, int x, int y)
 {
-    p.drawPixmap(QRect(x, y, cellWidth, cellWidth), QPixmap(":/icons/icons/mine.png"));
+    p.drawPixmap(QRect(x, y, cellWidth, cellWidth),
+                 QPixmap(":/icons/icons/mine.png"));
 }
 
-void SapperFieldWidget::drawFlag(QPainter &p, int x, int y)
+void SapperFieldWidget::drawMineFlag(QPainter &p, int x, int y)
 {
-    p.drawPixmap(QRect(x, y, cellWidth, cellWidth), QPixmap(":/icons/icons/red-flag.png"));
+    p.drawPixmap(QRect(x, y, cellWidth, cellWidth),
+                 QPixmap(":/icons/icons/red-flag.png"));
+}
+
+void SapperFieldWidget::drawDoubtFlag(QPainter &p, int x, int y)
+{
+    p.drawPixmap(QRect(x, y, cellWidth, cellWidth),
+                 QPixmap(":/icons/icons/doubt-flag.png"));
 }
