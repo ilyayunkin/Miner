@@ -35,18 +35,8 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
         for(int col = 0; col < sapper->getSide(); col++){
             QPoint point(col, row);
 
-            if(sapper->isFlagged(point)){
-                p.setBrush(Qt::yellow);
-            }else if(sapper->isOpended(point)){
-                if(sapper->isMined(point)){
-                    p.setBrush(Qt::red);
-                }else{
-                    p.setBrush(Qt::transparent);
-                }
-            }else{
-                p.setBrush(Qt::lightGray);
+            p.setBrush(getCellColor(point));
 
-            }
             int x = cellWidth * col;
             int y = cellWidth * row;
             QPen pen(Qt::black);
@@ -73,6 +63,22 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
         }
     }
 }
+
+QColor SapperFieldWidget::getCellColor(const QPoint &point)
+{
+    if(sapper->isFlagged(point)){
+        return Qt::yellow;
+    }else if(sapper->isOpended(point)){
+        if(sapper->isMined(point)){
+            return Qt::red;
+        }else{
+            return Qt::transparent;
+        }
+    }else{
+        return Qt::lightGray;
+    }
+}
+
 
 void SapperFieldWidget::resizeEvent(QResizeEvent * event)
 {

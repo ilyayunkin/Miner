@@ -29,6 +29,8 @@ class SapperFieldWidget : public QWidget
 
     void drawMine(QPainter &p, int x, int y);
 
+    QColor getCellColor(const QPoint &point);
+
 public:
     SapperFieldWidget(Sapper *sapper, QWidget *parent = 0);
 
