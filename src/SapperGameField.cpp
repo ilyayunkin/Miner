@@ -34,7 +34,9 @@ void SapperGameField::placeMines(const int mines, const QPoint &freeCell)
 
         do{
             point = randomPoint();
-        }while((point == freeCell) || (getCell(point)->mined));
+        }while((point == freeCell) ||
+               (getCell(point)->mined) ||
+               areNeighbors(point, freeCell));
 
         placeMine(point);
     }
@@ -251,4 +253,10 @@ int SapperGameField::getNeiMines(const QPoint &point)
 int SapperGameField::getEstimatedFlags()
 {
     return mines - flags;
+}
+
+bool SapperGameField::areNeighbors(const QPoint &point1, const QPoint &point2)
+{
+    return (abs(point1.x() - point2.x()) <= 1) &&
+            (abs(point1.y() - point2.y()) <= 1);
 }

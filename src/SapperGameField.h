@@ -61,6 +61,7 @@ class SapperGameField : public QObject
     FieldCell *getCell(const QPoint &point) const;
 
     void toggleFlag(FieldCell *cell);
+    bool areNeighbors(const QPoint &point1, const QPoint &point2);
 
 public:
     SapperGameField(int side, int mines, const QPoint &freeCell,
