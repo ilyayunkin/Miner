@@ -13,7 +13,8 @@ SapperGameField::SapperGameField(int side, int mines, const QPoint &freeCell,
     randomEngine(time(NULL)),
     side(side),
     mines(mines),
-    flags(0)
+    flags(0),
+    gameContinues(true)
 {
     map = new FieldCell[side * side];
 
@@ -83,29 +84,6 @@ QPoint SapperGameField::randomPoint()
 FieldCell *SapperGameField::getCell(const QPoint &point) const
 {
     return map + point.y() * side + point.x();
-}
-
-void SapperGameField::click(const QPoint &point)
-{
-    FieldCell *cell = getCell(point);
-    if(!cell->opened){
-        cell->opened = true;
-
-        if(cell->mined){
-            cell->bombed = true;
-            openAll();
-            emit bombed();
-        }else{
-            // Open neighbors only if clicked to free space
-            if(getNeiMines(point) == 0){
-                openNotMinedNeighbors(point);
-            }
-            if(allFreeOpened()){
-                flagAllMines();
-                emit win();
-            }
-        }
-    }
 }
 
 bool SapperGameField::allFreeOpened()
@@ -186,14 +164,42 @@ void SapperGameField::toggleFlag(const QPoint &point)
 
 void SapperGameField::toggleFlag(FieldCell *cell)
 {
-    cell->flagged = !cell->flagged;
-    if(cell->flagged){
-        flags++;
-    }else{
-        flags--;
+    if(gameContinues){
+        cell->flagged = !cell->flagged;
+        if(cell->flagged){
+            flags++;
+        }else{
+            flags--;
+        }
     }
 }
 
+void SapperGameField::click(const QPoint &point)
+{
+    if(gameContinues){
+        FieldCell *cell = getCell(point);
+        if(!cell->opened){
+            cell->opened = true;
+
+            if(cell->mined){
+                cell->bombed = true;
+                openAll();
+                gameContinues = false;
+                emit bombed();
+            }else{
+                // Open neighbors only if clicked to free space
+                if(getNeiMines(point) == 0){
+                    openNotMinedNeighbors(point);
+                }
+                if(allFreeOpened()){
+                    flagAllMines();
+                    gameContinues = false;
+                    emit win();
+                }
+            }
+        }
+    }
+}
 
 bool SapperGameField::isFlagged(const QPoint &point)
 {

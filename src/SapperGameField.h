@@ -24,11 +24,19 @@ class SapperGameField : public QObject
     Q_OBJECT
 
     std::default_random_engine randomEngine;
+    /// Count of cells per row / col.
     int side;
+    /// Count of mines on the field.
     int mines;
+    /// Count of flagged cells.
     int flags;
+    /// Should be true until win or lose.
+    bool gameContinues;
     FieldCell *map;
 
+    /**
+     * @return random point index on field;
+     */
     QPoint randomPoint();
     void placeMines(const int mines, const QPoint &freeCell);
     void placeMine(const QPoint &point);
