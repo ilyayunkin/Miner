@@ -13,8 +13,8 @@ SapperFieldWidget::SapperFieldWidget(Sapper *sapper, QWidget *parent) :
     widgetToPlotScale(0),
     horizontalBorder(0),
     verticalBorder(0),
-    plotWidth(10000),
-    cellWidth(1)
+    cellWidth(32),
+    plotWidth(cellWidth * sapper->getSide())
 {
     QTimer *timer = new QTimer(this);
     timer->start(100);
@@ -59,7 +59,6 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
                     }
                 }
             }
-
         }
     }
 }
@@ -86,8 +85,6 @@ void SapperFieldWidget::resizeEvent(QResizeEvent * event)
     int w = event->size().width();
 
     int side = std::min(h, w);
-
-    cellWidth = float(plotWidth) / sapper->getSide();
 
     widgetToPlotScale = float(plotWidth) / side;
     plotToWidgetScale = float(side) / plotWidth;

@@ -18,10 +18,13 @@ class SapperFieldWidget : public QWidget
     int verticalBorder;
 
     /**
+     * @brief Pixels count in side of one cell rect
+     */
+    const int cellWidth;
+    /**
      * @brief Pixels count in smaller side of widget
      */
     const int plotWidth;
-    int cellWidth;
 
     void paintEvent(QPaintEvent *e);
     void resizeEvent(QResizeEvent * event);
