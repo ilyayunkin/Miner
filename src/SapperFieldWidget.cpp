@@ -15,7 +15,8 @@ SapperFieldWidget::SapperFieldWidget(Sapper *sapper, QWidget *parent) :
     horizontalBorder(0),
     verticalBorder(0),
     cellWidth(64),
-    plotWidth(cellWidth * sapper->getSide())
+    margin(2),
+    plotWidth(cellWidth * sapper->getSide() + margin * 2)
 {
     QTimer *timer = new QTimer(this);
     timer->start(100);

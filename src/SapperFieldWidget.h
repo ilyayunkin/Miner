@@ -21,6 +21,8 @@ class SapperFieldWidget : public QWidget
      * @brief Pixels count in side of one cell rect
      */
     const int cellWidth;
+
+    int margin;
     /**
      * @brief Pixels count in smaller side of widget
      */
