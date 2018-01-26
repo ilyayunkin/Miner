@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/ilyayunkin/Sapper.svg)](https://travis-ci.org/ilyayunkin/Sapper)
 # Sapper
 Classical Minesweeper game.
 
