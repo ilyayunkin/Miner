@@ -6,9 +6,12 @@ compiler:
   
 install:
   - sudo apt-get update
-  - sudo apt install qt5-default qtbase5-dev
+  - sudo apt install qt5-default qtbase5-dev cppcheck
 
 script:
   - cd ./src
   - qmake Sapper.pro
   - make
+  # Cppcheck 
+  - cppcheck -q --force --enable=warning,style,performance,portability . 2>cppcheck.log
+  - cat cppcheck.log
