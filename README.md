@@ -3,7 +3,7 @@
 
 [Latest release for Windows](https://github.com/ilyayunkin/Sapper/releases/latest)
 # Sapper
-Classical Minesweeper game.
+Classic Minesweeper game.
 
 ## Screenshots
 
