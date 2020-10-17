@@ -7,6 +7,7 @@
 #include <QQueue>
 
 #include <random>
+#include <vector>
 
 #include "FlagState.h"
 
@@ -34,7 +35,7 @@ class SapperGameField : public QObject
     int flags;
     /// Should be true until win or lose.
     bool gameContinues;
-    FieldCell *map;
+    std::vector<FieldCell> map;
 
     /**
      * @return random point index on field;
@@ -58,9 +59,10 @@ class SapperGameField : public QObject
     void flagAllMines();
 
     bool allFreeOpened();
-    FieldCell *getCell(const QPoint &point) const;
+    FieldCell &getCell(const QPoint &point);
+    const FieldCell &getCell(const QPoint &point) const;
 
-    void toggleFlag(FieldCell *cell);
+    void toggleFlag(FieldCell &cell);
     bool areNeighbors(const QPoint &point1, const QPoint &point2);
 
 public:

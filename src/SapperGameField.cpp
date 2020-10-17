@@ -17,14 +17,13 @@ SapperGameField::SapperGameField(int side, int mines, const QPoint &freeCell,
     flags(0),
     gameContinues(true)
 {
-    map = new FieldCell[side * side];
+    map.resize(side * side);
 
     placeMines(mines, freeCell);
 }
 
 SapperGameField::~SapperGameField()
 {
-    delete[] map;
 }
 
 void SapperGameField::placeMines(const int mines, const QPoint &freeCell)
@@ -35,7 +34,7 @@ void SapperGameField::placeMines(const int mines, const QPoint &freeCell)
         do{
             point = randomPoint();
         }while((point == freeCell) ||
-               (getCell(point)->mined) ||
+               (getCell(point).mined) ||
                areNeighbors(point, freeCell));
 
         placeMine(point);
@@ -44,8 +43,8 @@ void SapperGameField::placeMines(const int mines, const QPoint &freeCell)
 
 void SapperGameField::placeMine(const QPoint &point)
 {
-    FieldCell *cell = getCell(point);
-    cell->mined = true;
+    FieldCell &cell = getCell(point);
+    cell.mined = true;
     markNeighbors(point);
 }
 
@@ -62,7 +61,7 @@ void SapperGameField::markNeighbors(const QPoint &point)
 void SapperGameField::markNeighbor(const QPoint &point)
 {
     if(exists(point)){
-        (getCell(point)->neiMined)++;
+        (getCell(point).neiMined)++;
     }
 }
 
@@ -84,9 +83,14 @@ QPoint SapperGameField::randomPoint()
     return QPoint(col, row);
 }
 
-FieldCell *SapperGameField::getCell(const QPoint &point) const
+FieldCell &SapperGameField::getCell(const QPoint &point)
 {
-    return map + point.y() * side + point.x();
+    return map[point.y() * side + point.x()];
+}
+
+const FieldCell &SapperGameField::getCell(const QPoint &point) const
+{
+    return map[point.y() * side + point.x()];
 }
 
 bool SapperGameField::allFreeOpened()
@@ -112,11 +116,11 @@ void SapperGameField::openNotMinedNeighbors(const QPoint &point)
     enqueueNeighbors(point, queue, openedList);
     while(!queue.empty()){
         QPoint point= queue.takeFirst();
-        FieldCell *cell = getCell(point);
+        FieldCell &cell = getCell(point);
 
-        cell->opened = true;
+        cell.opened = true;
         openedList.append(point);
-        if(cell->neiMined == 0){
+        if(cell.neiMined == 0){
             enqueueNeighbors(point, queue, openedList);
         }
     }
@@ -139,7 +143,7 @@ void SapperGameField::enqueueNeighbor(const QPoint &point,
                                       QList<QPoint> &openedList)
 {
     if(exists(point) && (!openedList.contains(point)) &&
-            (!getCell(point)->mined)){
+            (!getCell(point).mined)){
         queue.enqueue(point);
     }
 }
@@ -155,7 +159,7 @@ void SapperGameField::flagAllMines()
 {
     for(int i = 0; i < side * side; i++){
         if(map[i].mined && (!map[i].flag)){
-            toggleFlag(&map[i]);
+            toggleFlag(map[i]);
         }
     }
 }
@@ -165,17 +169,17 @@ void SapperGameField::toggleFlag(const QPoint &point)
     toggleFlag(getCell(point));
 }
 
-void SapperGameField::toggleFlag(FieldCell *cell)
+void SapperGameField::toggleFlag(FieldCell &cell)
 {
     if(gameContinues){
-        switch (cell->flag) {
-        case Flag::NO: cell->flag = Flag::MINE;
+        switch (cell.flag) {
+        case Flag::NO: cell.flag = Flag::MINE;
             flags++;
             break;
-        case Flag::MINE: cell->flag = Flag::DOUBT;
+        case Flag::MINE: cell.flag = Flag::DOUBT;
             flags--;
             break;
-        case Flag::DOUBT: cell->flag = Flag::NO;
+        case Flag::DOUBT: cell.flag = Flag::NO;
             break;
         default: assert(false);
             break;
@@ -186,12 +190,12 @@ void SapperGameField::toggleFlag(FieldCell *cell)
 void SapperGameField::click(const QPoint &point)
 {
     if(gameContinues){
-        FieldCell *cell = getCell(point);
-        if(!cell->opened){
-            cell->opened = true;
+        FieldCell &cell = getCell(point);
+        if(!cell.opened){
+            cell.opened = true;
 
-            if(cell->mined){
-                cell->bombed = true;
+            if(cell.mined){
+                cell.bombed = true;
                 openAll();
                 gameContinues = false;
                 emit bombed();
@@ -212,41 +216,41 @@ void SapperGameField::click(const QPoint &point)
 
 Flag::FlagState SapperGameField::isFlagged(const QPoint &point)
 {
-    return getCell(point)->flag;
+    return getCell(point).flag;
 }
 
 bool SapperGameField::isOpended(const QPoint &point)
 {
-    return getCell(point)->opened;
+    return getCell(point).opened;
 }
 
 bool SapperGameField::isMined(const QPoint &point)
 {
-    FieldCell *cell = getCell(point);
-    if(!cell->opened){
+    FieldCell &cell = getCell(point);
+    if(!cell.opened){
         return false;
     }else{
-        return cell->mined;
+        return cell.mined;
     }
 }
 
 bool SapperGameField::isExploded(const QPoint &point)
 {
-    FieldCell *cell = getCell(point);
-    if(!cell->opened){
+    FieldCell &cell = getCell(point);
+    if(!cell.opened){
         return false;
     }else{
-        return cell->bombed;
+        return cell.bombed;
     }
 }
 
 int SapperGameField::getNeiMines(const QPoint &point)
 {
-    FieldCell *cell = getCell(point);
-    if(!cell->opened){
+    FieldCell &cell = getCell(point);
+    if(!cell.opened){
         return 0;
     }else{
-        return cell->neiMined;
+        return cell.neiMined;
     }
 }
 
