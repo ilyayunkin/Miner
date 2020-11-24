@@ -65,7 +65,7 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
                     }
                 }
             }
-            switch (sapper->isFlagged(point)) {
+            switch (sapper->getFlag(point)) {
             case Flag::NO: // Nothing to do
                 break;
             case Flag::MINE:drawMineFlag(p, x, y);
@@ -81,7 +81,7 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
 
 QColor SapperFieldWidget::getCellColor(const QPoint &point)
 {
-    if(sapper->isFlagged(point)){
+    if(sapper->getFlag(point) != Flag::NO){
         return Qt::yellow;
     }else if(sapper->isOpended(point)){
             return Qt::transparent;

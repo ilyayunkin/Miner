@@ -15,7 +15,7 @@ struct FieldCell
 {
     bool mined;
     short neiMined;
-    Flag::FlagState flag;
+    Flag flag;
     bool opened;
     bool bombed;
 
@@ -41,6 +41,7 @@ class SapperGameField : public QObject
      * @return random point index on field;
      */
     QPoint randomPoint();
+    /// Settles the field by mines, the specified poind must stay free
     void placeMines(const int mines, const QPoint &freeCell);
     void placeMine(const QPoint &point);
     void markNeighbors(const QPoint &point);
@@ -72,7 +73,7 @@ public:
 
     void click(const QPoint &point);
     void toggleFlag(const QPoint &point);
-    Flag::FlagState isFlagged(const QPoint &point);
+    Flag getFlag(const QPoint &point);
     bool isOpended(const QPoint &point);
     bool isMined(const QPoint &point);
     bool isExploded(const QPoint &point);

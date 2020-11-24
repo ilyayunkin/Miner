@@ -1,8 +1,7 @@
 #ifndef FLAGSTATE_H
 #define FLAGSTATE_H
 
-namespace Flag {
-enum FlagState
+enum class Flag
 {
     NO,
     MINE,
@@ -10,7 +9,5 @@ enum FlagState
 
     COUNT
 };
-}
-
 
 #endif // FLAGSTATE_H

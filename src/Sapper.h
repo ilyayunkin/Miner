@@ -28,7 +28,7 @@ public:
      * @param point - Cell index.
      * @return true if flag seted to this cell.
      */
-    Flag::FlagState isFlagged(const QPoint &point);
+    Flag getFlag(const QPoint &point);
     /**
      * @param point - Cell index.
      * @return Returns true if cell were opened.

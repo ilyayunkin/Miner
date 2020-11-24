@@ -151,7 +151,7 @@ void SapperGameField::openAll()
 void SapperGameField::flagAllMines()
 {
     for(auto &tile : map){
-        if(tile.mined && (!tile.flag)){
+        if(tile.mined && (tile.flag == Flag::NO)){
             toggleFlag(tile);
         }
     }
@@ -207,7 +207,7 @@ void SapperGameField::click(const QPoint &point)
     }
 }
 
-Flag::FlagState SapperGameField::isFlagged(const QPoint &point)
+Flag SapperGameField::getFlag(const QPoint &point)
 {
     return getCell(point).flag;
 }
