@@ -13,12 +13,12 @@ SapperPrivate::SapperPrivate(int side, int mines, QObject *parent) :
 {
 }
 
-int SapperPrivate::getSide()
+int SapperPrivate::getSide() const
 {
     return side;
 }
 
-int SapperPrivate::getEstimatedFlags()
+int SapperPrivate::getEstimatedFlags()const
 {
     if(gameField == NULL){
         return mines;
@@ -52,7 +52,7 @@ void SapperPrivate::toggleFlag(const QPoint &point)
     }
 }
 
-Flag SapperPrivate::getFlag(const QPoint &point)
+Flag SapperPrivate::getFlag(const QPoint &point) const
 {
     if(gameField == NULL){
         return Flag::NO;
@@ -61,7 +61,7 @@ Flag SapperPrivate::getFlag(const QPoint &point)
     }
 }
 
-bool SapperPrivate::isOpended(const QPoint &point)
+bool SapperPrivate::isOpended(const QPoint &point) const
 {
     if(gameField == NULL){
         return false;
@@ -70,7 +70,7 @@ bool SapperPrivate::isOpended(const QPoint &point)
     }
 }
 
-bool SapperPrivate::isMined(const QPoint &point)
+bool SapperPrivate::isMined(const QPoint &point) const
 {
     if(gameField == NULL){
         return false;
@@ -79,7 +79,7 @@ bool SapperPrivate::isMined(const QPoint &point)
     }
 }
 
-bool SapperPrivate::isExploded(const QPoint &point)
+bool SapperPrivate::isExploded(const QPoint &point) const
 {
     if(gameField == NULL){
         return false;
@@ -88,7 +88,7 @@ bool SapperPrivate::isExploded(const QPoint &point)
     }
 }
 
-int SapperPrivate::getNeiMines(const QPoint &point)
+int SapperPrivate::getNeiMines(const QPoint &point) const
 {
     if(gameField == NULL){
         return 0;
@@ -97,7 +97,7 @@ int SapperPrivate::getNeiMines(const QPoint &point)
     }
 }
 
-int SapperPrivate::getTimeSeconds()
+int SapperPrivate::getTimeSeconds() const
 {
     return time;
 }

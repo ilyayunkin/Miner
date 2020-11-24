@@ -66,7 +66,7 @@ void SapperGameField::markNeighbor(const QPoint &point)
     }
 }
 
-bool SapperGameField::exists(const QPoint &point)
+bool SapperGameField::exists(const QPoint &point) const
 {
     bool xOk = (point.x() >= 0) && (point.x() < side);
     bool yOk = (point.y() >= 0) && (point.y() < side);
@@ -75,7 +75,7 @@ bool SapperGameField::exists(const QPoint &point)
 }
 
 
-QPoint SapperGameField::randomPoint()
+QPoint SapperGameField::randomPoint() const
 {
     int randomNumber = randomEngine() % (side * side);
     int row = randomNumber / side;
@@ -94,7 +94,7 @@ const FieldCell &SapperGameField::getCell(const QPoint &point) const
     return map[point.y() * side + point.x()];
 }
 
-bool SapperGameField::allFreeOpened()
+bool SapperGameField::allFreeOpened()const
 {
     return std::none_of(map.begin(), map.end(),
                         [](auto tile){return (!tile.opened) && (!tile.mined);});
@@ -207,19 +207,19 @@ void SapperGameField::click(const QPoint &point)
     }
 }
 
-Flag SapperGameField::getFlag(const QPoint &point)
+Flag SapperGameField::getFlag(const QPoint &point) const
 {
     return getCell(point).flag;
 }
 
-bool SapperGameField::isOpended(const QPoint &point)
+bool SapperGameField::isOpended(const QPoint &point) const
 {
     return getCell(point).opened;
 }
 
-bool SapperGameField::isMined(const QPoint &point)
+bool SapperGameField::isMined(const QPoint &point) const
 {
-    FieldCell &cell = getCell(point);
+    const FieldCell &cell = getCell(point);
     if(!cell.opened){
         return false;
     }else{
@@ -227,9 +227,9 @@ bool SapperGameField::isMined(const QPoint &point)
     }
 }
 
-bool SapperGameField::isExploded(const QPoint &point)
+bool SapperGameField::isExploded(const QPoint &point) const
 {
-    FieldCell &cell = getCell(point);
+    const FieldCell &cell = getCell(point);
     if(!cell.opened){
         return false;
     }else{
@@ -237,9 +237,9 @@ bool SapperGameField::isExploded(const QPoint &point)
     }
 }
 
-int SapperGameField::getNeiMines(const QPoint &point)
+int SapperGameField::getNeiMines(const QPoint &point) const
 {
-    FieldCell &cell = getCell(point);
+    const FieldCell &cell = getCell(point);
     if(!cell.opened){
         return 0;
     }else{
@@ -247,12 +247,12 @@ int SapperGameField::getNeiMines(const QPoint &point)
     }
 }
 
-int SapperGameField::getEstimatedFlags()
+int SapperGameField::getEstimatedFlags()const
 {
     return mines - flags;
 }
 
-bool SapperGameField::areNeighbors(const QPoint &point1, const QPoint &point2)
+bool SapperGameField::areNeighbors(const QPoint &point1, const QPoint &point2)const
 {
     return (abs(point1.x() - point2.x()) <= 1) &&
             (abs(point1.y() - point2.y()) <= 1);

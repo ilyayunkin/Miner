@@ -26,9 +26,9 @@ class SapperGameField : public QObject
 {
     Q_OBJECT
 
-    std::default_random_engine randomEngine;
+    mutable std::default_random_engine randomEngine;
     /// Count of cells per row / col.
-    int side;
+    const int side;
     /// Count of mines on the field.
     int mines;
     /// Count of flagged cells.
@@ -40,14 +40,14 @@ class SapperGameField : public QObject
     /**
      * @return random point index on field;
      */
-    QPoint randomPoint();
+    QPoint randomPoint()const;
     /// Settles the field by mines, the specified poind must stay free
     void placeMines(const int mines, const QPoint &freeCell);
     void placeMine(const QPoint &point);
     void markNeighbors(const QPoint &point);
     void markNeighbor(const QPoint &point);
     void openNotMinedNeighbors(const QPoint &point);
-    bool exists(const QPoint &point);
+    bool exists(const QPoint &point)const;
 
     void enqueueNeighbors(const QPoint &point,
                       QQueue<QPoint> &queue,
@@ -59,12 +59,12 @@ class SapperGameField : public QObject
     void openAll();
     void flagAllMines();
 
-    bool allFreeOpened();
+    bool allFreeOpened() const;
     FieldCell &getCell(const QPoint &point);
     const FieldCell &getCell(const QPoint &point) const;
 
     void toggleFlag(FieldCell &cell);
-    bool areNeighbors(const QPoint &point1, const QPoint &point2);
+    bool areNeighbors(const QPoint &point1, const QPoint &point2) const;
 
 public:
     SapperGameField(int side, int mines, const QPoint &freeCell,
@@ -73,13 +73,13 @@ public:
 
     void click(const QPoint &point);
     void toggleFlag(const QPoint &point);
-    Flag getFlag(const QPoint &point);
-    bool isOpended(const QPoint &point);
-    bool isMined(const QPoint &point);
-    bool isExploded(const QPoint &point);
-    int getNeiMines(const QPoint &point);
+    Flag getFlag(const QPoint &point)const;
+    bool isOpended(const QPoint &point)const;
+    bool isMined(const QPoint &point)const;
+    bool isExploded(const QPoint &point)const;
+    int getNeiMines(const QPoint &point)const;
 
-    int getEstimatedFlags();
+    int getEstimatedFlags() const;
 signals:
     void bombed();
     void win();

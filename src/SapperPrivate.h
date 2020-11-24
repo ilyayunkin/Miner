@@ -22,18 +22,18 @@ class SapperPrivate : public QObject
 
 public:
     explicit SapperPrivate(int side, int mines, QObject *parent = 0);
-    int getSide();
-    int getEstimatedFlags();
+    int getSide()const;
+    int getEstimatedFlags() const;
 
     void click(const QPoint &point);
     void toggleFlag(const QPoint &point);
-    Flag getFlag(const QPoint &point);
-    bool isOpended(const QPoint &point);
-    bool isMined(const QPoint &point);
-    bool isExploded(const QPoint &point);
-    int getNeiMines(const QPoint &point);
+    Flag getFlag(const QPoint &point)const;
+    bool isOpended(const QPoint &point)const;
+    bool isMined(const QPoint &point)const;
+    bool isExploded(const QPoint &point)const;
+    int getNeiMines(const QPoint &point)const;
 
-    int getTimeSeconds();
+    int getTimeSeconds()const;
 
 signals:
     void bombed();

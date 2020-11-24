@@ -12,17 +12,17 @@ Sapper::Sapper(int side, int mines, QObject *parent) :
     connect(privateMembers, SIGNAL(win()), SIGNAL(win()));
 }
 
-int Sapper::getSide()
+int Sapper::getSide() const
 {
     return privateMembers->getSide();
 }
 
-int Sapper::getEstimatedFlags()
+int Sapper::getEstimatedFlags() const
 {
     return privateMembers->getEstimatedFlags();
 }
 
-int Sapper::getTimeSeconds()
+int Sapper::getTimeSeconds()const
 {
     return privateMembers->getTimeSeconds();
 }
@@ -38,27 +38,27 @@ void Sapper::toggleFlag(const QPoint &point)
     privateMembers->toggleFlag(point);
 }
 
-Flag Sapper::getFlag(const QPoint &point)
+Flag Sapper::getFlag(const QPoint &point) const
 {
     return privateMembers->getFlag(point);
 }
 
-bool Sapper::isOpended(const QPoint &point)
+bool Sapper::isOpended(const QPoint &point) const
 {
     return privateMembers->isOpended(point);
 }
 
-bool Sapper::isMined(const QPoint &point)
+bool Sapper::isMined(const QPoint &point) const
 {
     return privateMembers->isMined(point);
 }
 
-bool Sapper::isExploded(const QPoint &point)
+bool Sapper::isExploded(const QPoint &point) const
 {
     return privateMembers->isExploded(point);
 }
 
-int Sapper::getNeighborMines(const QPoint &point)
+int Sapper::getNeighborMines(const QPoint &point)const
 {
     return privateMembers->getNeiMines(point);
 }

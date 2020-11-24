@@ -17,7 +17,7 @@ class Sapper : public QObject
     SapperPrivate *privateMembers;
 public:
     Sapper(int side, int mines, QObject *parent = 0);
-    int getSide();
+    int getSide() const;
     void click(const QPoint &point);
     /**
      * @brief Sets flag to specified cell.
@@ -28,22 +28,22 @@ public:
      * @param point - Cell index.
      * @return true if flag seted to this cell.
      */
-    Flag getFlag(const QPoint &point);
+    Flag getFlag(const QPoint &point)const;
     /**
      * @param point - Cell index.
      * @return Returns true if cell were opened.
      */
-    bool isOpended(const QPoint &point);
-    bool isMined(const QPoint &point);
-    bool isExploded(const QPoint &point);
+    bool isOpended(const QPoint &point)const;
+    bool isMined(const QPoint &point) const;
+    bool isExploded(const QPoint &point) const;
     /**
      * @param point - Cell index.
      * @return 0 if cell is not opened or count of mines in 8 neighboring cells.
      */
-    int getNeighborMines(const QPoint &point);
+    int getNeighborMines(const QPoint &point) const;
 
-    int getEstimatedFlags();
-    int getTimeSeconds();
+    int getEstimatedFlags() const;
+    int getTimeSeconds() const;
 signals:
     bool bombed();
     void win();
