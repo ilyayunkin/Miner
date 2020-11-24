@@ -2,6 +2,7 @@
 
 #include <time.h>
 #include <assert.h>
+#include <algorithm>
 
 FieldCell::FieldCell() :
     mined(false), neiMined(0), flag(Flag::NO), opened(false), bombed(false)
@@ -95,16 +96,8 @@ const FieldCell &SapperGameField::getCell(const QPoint &point) const
 
 bool SapperGameField::allFreeOpened()
 {
-    bool ret = true;
-
-    for(int i = 0; i < side * side; i++){
-        if((!map[i].opened) && (!map[i].mined)){
-            ret = false;
-            break;
-        }
-    }
-
-    return ret;
+    return std::none_of(map.begin(), map.end(),
+                        [](auto tile){return (!tile.opened) && (!tile.mined);});
 }
 
 
@@ -150,16 +143,16 @@ void SapperGameField::enqueueNeighbor(const QPoint &point,
 
 void SapperGameField::openAll()
 {
-    for(int i = 0; i < side * side; i++){
-        map[i].opened = true;
+    for(auto &tile : map){
+        tile.opened = true;
     }
 }
 
 void SapperGameField::flagAllMines()
 {
-    for(int i = 0; i < side * side; i++){
-        if(map[i].mined && (!map[i].flag)){
-            toggleFlag(map[i]);
+    for(auto &tile : map){
+        if(tile.mined && (!tile.flag)){
+            toggleFlag(tile);
         }
     }
 }
