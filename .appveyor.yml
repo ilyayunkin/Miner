@@ -1,0 +1,42 @@
+image:
+  - Visual Studio 2019
+  
+branches:
+  only:
+    - master
+    
+install:
+  - set QTDIR=C:\Qt\5.14.2\mingw73_32
+  - set QT_TOOLS_DIR=C:\Qt\Tools\mingw730_32\ 
+  - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw730_32\bin;%PATH%
+  - qmake -v  
+  
+build_script:
+  - qmake src/Sapper.pro
+  - mingw32-make
+  
+after_build:
+  - mkdir Sapper
+  - mv release/Sapper.exe Sapper
+  - windeployqt Sapper/Sapper.exe
+  - dir
+  - dir Sapper
+
+#Note: artifacts path should be from root directory
+artifacts:
+  - path: Sapper
+    type: zip
+
+deploy: 
+  release: Sapper-$(APPVEYOR_REPO_TAG_NAME)
+  tag: $(APPVEYOR_REPO_TAG_NAME)
+  description: 'Release description'
+  provider: GitHub
+  auth_token: # your encrypted token from GitHub
+    secure: 5c6ifu7R/0JzCAHg9PIxYsWvkc93jD6LZeAUmVoE8TxSMb8953FlsdJwNTzM30XN
+  artifact: Sapper.zip 
+  force_update: true
+  draft: false
+  prerelease: false
+  on:
+    APPVEYOR_REPO_TAG: true
