@@ -1,3 +1,4 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/cmtnt2h6cmd9yyx6?svg=true)](https://ci.appveyor.com/project/ilyayunkin/sapper)
 [![Build Status](https://travis-ci.org/ilyayunkin/Sapper.svg)](https://travis-ci.org/ilyayunkin/Sapper)
 # Sapper
 Classic Minesweeper game.
