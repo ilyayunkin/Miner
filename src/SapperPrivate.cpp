@@ -7,9 +7,9 @@ SapperPrivate::SapperPrivate(int side, int mines, QObject *parent) :
     side(side),
     mines(mines),
     time(0),
-    gameField(NULL),
+    gameField(nullptr),
     startTime(QDateTime::currentDateTime()),
-    timer(NULL)
+    timer(nullptr)
 {
 }
 
@@ -20,33 +20,37 @@ int SapperPrivate::getSide() const
 
 int SapperPrivate::getEstimatedFlags()const
 {
-    if(gameField == NULL){
+    if(gameField == nullptr){
         return mines;
     }else{
         return gameField->getEstimatedFlags();
     }
 }
 
+void SapperPrivate::createFieldAndTimer(const QPoint &point)
+{
+    assert(timer == nullptr);
+    assert(gameField == nullptr);
+    gameField = new SapperGameField(side, mines, point, this);
+    connect(gameField, SIGNAL(bombed()), SLOT(bombedSlot()));
+    connect(gameField, SIGNAL(win()), SLOT(winSlot()));
+
+    timer = new QTimer(this);
+    timer->start(100);
+    connect(timer, SIGNAL(timeout()), SLOT(update()));
+}
+
 void SapperPrivate::click(const QPoint &point)
 {
-    if(gameField == NULL){
-        gameField = new SapperGameField(side, mines, point, this);
-        connect(gameField, SIGNAL(bombed()), SLOT(bombedSlot()));
-        connect(gameField, SIGNAL(win()), SLOT(winSlot()));
-
-        timer = new QTimer(this);
-        timer->start(100);
-        connect(timer, SIGNAL(timeout()), SLOT(update()));
-    }else{
-        // Field already exists
+    if(gameField == nullptr){
+        createFieldAndTimer(point);
     }
-
     gameField->click(point);
 }
 
 void SapperPrivate::toggleFlag(const QPoint &point)
 {
-    if(gameField == NULL){
+    if(gameField == nullptr){
     }else{
         gameField->toggleFlag(point);
     }
@@ -54,7 +58,7 @@ void SapperPrivate::toggleFlag(const QPoint &point)
 
 Flag SapperPrivate::getFlag(const QPoint &point) const
 {
-    if(gameField == NULL){
+    if(gameField == nullptr){
         return Flag::NO;
     }else{
         return gameField->getFlag(point);
@@ -63,7 +67,7 @@ Flag SapperPrivate::getFlag(const QPoint &point) const
 
 bool SapperPrivate::isOpended(const QPoint &point) const
 {
-    if(gameField == NULL){
+    if(gameField == nullptr){
         return false;
     }else{
         return gameField->isOpended(point);
@@ -72,7 +76,7 @@ bool SapperPrivate::isOpended(const QPoint &point) const
 
 bool SapperPrivate::isMined(const QPoint &point) const
 {
-    if(gameField == NULL){
+    if(gameField == nullptr){
         return false;
     }else{
         return gameField->isMined(point);
@@ -81,7 +85,7 @@ bool SapperPrivate::isMined(const QPoint &point) const
 
 bool SapperPrivate::isExploded(const QPoint &point) const
 {
-    if(gameField == NULL){
+    if(gameField == nullptr){
         return false;
     }else{
         return gameField->isExploded(point);
@@ -90,7 +94,7 @@ bool SapperPrivate::isExploded(const QPoint &point) const
 
 int SapperPrivate::getNeiMines(const QPoint &point) const
 {
-    if(gameField == NULL){
+    if(gameField == nullptr){
         return 0;
     }else{
         return gameField->getNeiMines(point);
@@ -109,14 +113,14 @@ void SapperPrivate::update()
 
 void SapperPrivate::bombedSlot()
 {
-    assert(timer != NULL);
+    assert(timer != nullptr);
     timer->stop();
     emit bombed();
 }
 
 void SapperPrivate::winSlot()
 {
-    assert(timer != NULL);
+    assert(timer != nullptr);
     timer->stop();
     emit win();
 }
