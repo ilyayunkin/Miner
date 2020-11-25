@@ -32,6 +32,12 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
     QPainter p(this);
     p.scale(plotToWidgetScale, plotToWidgetScale);
     p.translate(horizontalBorder, verticalBorder);
+    QPen pen(Qt::black);
+    pen.setWidth(plotWidth / 1000);
+    p.setPen(pen);
+    QFont f;
+    f.setPixelSize(plotWidth / 100 * 4);
+    p.setFont(f);
 
     for(int row = 0; row < sapper->getSide(); row++){
         for(int col = 0; col < sapper->getSide(); col++){
@@ -41,9 +47,6 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
 
             int x = cellWidth * col;
             int y = cellWidth * row;
-            QPen pen(Qt::black);
-            pen.setWidth(plotWidth / 1000);
-            p.setPen(pen);
             p.drawRect(x, y, cellWidth, cellWidth);
 
             if(sapper->isOpended(point)){
@@ -54,10 +57,6 @@ void SapperFieldWidget::paintEvent(QPaintEvent *e)
                         drawMine(p, x, y);
                     }
                 }else{
-                    QFont f;
-                    f.setPixelSize(plotWidth / 100 * 4);
-                    p.setPen(Qt::black);
-                    p.setFont(f);
                     if(sapper->getNeighborMines(point) > 0){
                         p.drawText(QRect(x, y, cellWidth, cellWidth),
                                    QString::number(sapper->getNeighborMines(point)),
@@ -117,9 +116,9 @@ void SapperFieldWidget::mouseReleaseEvent(QMouseEvent *e)
     bool onField = (col >= 0) && (col < sapper->getSide()) &&
             (row >= 0) && (row < sapper->getSide());
 
-    QPoint cell(col, row);
-
     if(onField){
+        QPoint cell(col, row);
+
         if(e->button() == Qt::LeftButton){
             sapper->click(cell);
         }else if(e->button() == Qt::RightButton){
