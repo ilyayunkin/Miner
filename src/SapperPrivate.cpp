@@ -8,20 +8,13 @@ SapperPrivate::SapperPrivate(int side, int mines, QObject *parent) :
     QObject(parent),
     side(side),
     mines(mines),
-    time(0),
     gameField(nullptr),
-    startTime(QDateTime::currentDateTime()),
-    timer(nullptr)
+    startTime(QDateTime::currentDateTime())
 {
 }
 
 SapperPrivate::~SapperPrivate()
 {
-}
-
-int SapperPrivate::getSide() const
-{
-    return side;
 }
 
 int SapperPrivate::getEstimatedFlags()const
@@ -33,23 +26,18 @@ int SapperPrivate::getEstimatedFlags()const
     }
 }
 
-void SapperPrivate::createFieldAndTimer(const QPoint &point)
+void SapperPrivate::createField(const QPoint &point)
 {
-    assert(timer == nullptr);
     assert(gameField == nullptr);
     gameField.reset(new SapperGameField(side, mines, point, this));
     connect(gameField.get(), SIGNAL(bombed()), SLOT(bombedSlot()));
     connect(gameField.get(), SIGNAL(win()), SLOT(winSlot()));
-
-    timer = new QTimer(this);
-    timer->start(100);
-    connect(timer, SIGNAL(timeout()), SLOT(update()));
 }
 
 void SapperPrivate::click(const QPoint &point)
 {
     if(gameField == nullptr){
-        createFieldAndTimer(point);
+        createField(point);
     }
     gameField->click(point);
 }
@@ -109,24 +97,20 @@ int SapperPrivate::getNeiMines(const QPoint &point) const
 
 int SapperPrivate::getTimeSeconds() const
 {
-    return time;
-}
-
-void SapperPrivate::update()
-{
-    time = startTime.secsTo(QDateTime::currentDateTime());
+    if(timerEnd)
+        return timerEnd;
+    else
+        return startTime.secsTo(QDateTime::currentDateTime());
 }
 
 void SapperPrivate::bombedSlot()
 {
-    assert(timer != nullptr);
-    timer->stop();
+    timerEnd = startTime.secsTo(QDateTime::currentDateTime());
     emit bombed();
 }
 
 void SapperPrivate::winSlot()
 {
-    assert(timer != nullptr);
-    timer->stop();
+    timerEnd = startTime.secsTo(QDateTime::currentDateTime());
     emit win();
 }

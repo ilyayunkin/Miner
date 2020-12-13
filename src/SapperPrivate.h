@@ -16,7 +16,7 @@ class SapperPrivate : public QObject
 public:
     explicit SapperPrivate(int side, int mines, QObject *parent = 0);
     ~SapperPrivate();
-    int getSide()const;
+    int getSide()const{return side;};
     int getEstimatedFlags() const;
 
     void click(const QPoint &point);
@@ -34,17 +34,15 @@ signals:
     void win();
 
 private slots:
-    void update();
     void bombedSlot();
     void winSlot();
 private:
     const int side;
     const int mines;
-    int time;
     std::unique_ptr<SapperGameField> gameField;
     QDateTime startTime;
-    QTimer *timer;
-    void createFieldAndTimer(const QPoint &point);
+    int timerEnd = 0;
+    void createField(const QPoint &point);
 };
 
 #endif // SAPPERPRIVATE_H
