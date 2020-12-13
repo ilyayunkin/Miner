@@ -3,6 +3,29 @@
 
 #include "SapperGameField.h"
 
+auto getMinedPoint(SapperGameField &field){
+    for(int i = 0; i < field.getFieldSide(); ++i){
+        for(int j = 0; j < field.getFieldSide(); ++j){
+            QPoint p(i, j);
+            if(field.isMined(p))
+                return p;
+        }
+    }
+    throw std::runtime_error("No mines found");
+};
+
+void openAllFreePoints(SapperGameField &field){
+    for(int i = 0; i < field.getFieldSide(); ++i){
+        for(int j = 0; j < field.getFieldSide(); ++j){
+            QPoint p(i, j);
+            if(!field.isMined(p)){
+                field.click(p);
+                QVERIFY(field.isOpended(p));
+            }
+        }
+    }
+}
+
 class SapperFieldTest : public QObject
 {
     Q_OBJECT
@@ -20,6 +43,8 @@ private slots:
     void countsMinesFlags();
     void placesSpecifiedCountOfMines();
     void noMinesInitiallyExploded();
+    void clickingMinedFieldLeadsToExplosion();
+    void openingAllFreeCellsFlagsAllMines();
 };
 
 SapperFieldTest::SapperFieldTest(){
@@ -120,6 +145,37 @@ void SapperFieldTest::noMinesInitiallyExploded(){
     for(int i = 0; i < side; ++i){
         for(int j = 0; j < side; ++j){
             QVERIFY(!field.isExploded(QPoint(i, j)));
+        }
+    }
+}
+
+void SapperFieldTest::clickingMinedFieldLeadsToExplosion(){
+    constexpr auto side = 10;
+    constexpr auto mines = 10;
+    constexpr auto point = QPoint(0, 0);
+    SapperGameField field(side, mines, point);
+
+    auto minedPoint = getMinedPoint(field);
+
+    QVERIFY(field.isMined(minedPoint));
+    QVERIFY(!field.isExploded(minedPoint));
+    field.click(minedPoint);
+    QVERIFY(field.isExploded(minedPoint));
+}
+
+void SapperFieldTest::openingAllFreeCellsFlagsAllMines(){
+    constexpr auto side = 10;
+    constexpr auto mines = 10;
+    constexpr auto point = QPoint(0, 0);
+    SapperGameField field(side, mines, point);
+    openAllFreePoints(field);
+
+    for(int i = 0; i < side; ++i){
+        for(int j = 0; j < side; ++j){
+            QPoint p(i, j);
+            if(field.isMined(p)){
+                QCOMPARE(field.getFlag(p), Flag::MINE);
+            }
         }
     }
 }
