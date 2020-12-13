@@ -19,7 +19,6 @@ install:
   - cmd: set QT_TOOLS_DIR=C:\Qt\Tools\mingw730_32\ 
   - cmd: set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw730_32\bin;%PATH%
   - sh: PATH=$HOME/Qt/5.14.2/gcc_64/bin:$PATH
-  - sh: sudo apt-get install -y libgl-dev
   - qmake -v
   
 build_script:
