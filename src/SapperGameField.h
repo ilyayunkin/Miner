@@ -32,7 +32,7 @@ public:
     ~SapperGameField();
 
     void click(const QPoint &point);
-    int getFieldSide();
+    int getFieldSide()const;
     void toggleFlag(const QPoint &point);
     Flag getFlag(const QPoint &point)const;
     bool isOpended(const QPoint &point)const;

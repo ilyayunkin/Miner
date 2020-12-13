@@ -18,6 +18,8 @@ private slots:
     void clickedCellOpens();
     void togglesMineDoubtNoFlag();
     void countsMinesFlags();
+    void placesSpecifiedCountOfMines();
+    void noMinesInitiallyExploded();
 };
 
 SapperFieldTest::SapperFieldTest(){
@@ -78,6 +80,8 @@ void SapperFieldTest::togglesMineDoubtNoFlag()
     QCOMPARE(field.getFlag(point), Flag::MINE);
     field.toggleFlag(point);
     QCOMPARE(field.getFlag(point), Flag::DOUBT);
+    field.toggleFlag(point);
+    QCOMPARE(field.getFlag(point), Flag::NO);
 }
 
 void SapperFieldTest::countsMinesFlags(){
@@ -89,6 +93,35 @@ void SapperFieldTest::countsMinesFlags(){
     QCOMPARE(mines, field.getEstimatedFlags());
     field.toggleFlag(point);
     QCOMPARE(mines - 1, field.getEstimatedFlags());
+}
+
+void SapperFieldTest::placesSpecifiedCountOfMines(){
+    constexpr auto side = 10;
+    constexpr auto mines = 10;
+    constexpr auto point = QPoint(0, 0);
+    SapperGameField field(side, mines, point);
+
+    int minesCount = 0;
+    for(int i = 0; i < side; ++i){
+        for(int j = 0; j < side; ++j){
+            if(field.isMined(QPoint(i, j))){
+                ++minesCount;
+            }
+        }
+    }
+    QCOMPARE(mines, minesCount);
+}
+
+void SapperFieldTest::noMinesInitiallyExploded(){
+    constexpr auto side = 10;
+    constexpr auto mines = 10;
+    constexpr auto point = QPoint(0, 0);
+    SapperGameField field(side, mines, point);
+    for(int i = 0; i < side; ++i){
+        for(int j = 0; j < side; ++j){
+            QVERIFY(!field.isExploded(QPoint(i, j)));
+        }
+    }
 }
 
 QTEST_MAIN(SapperFieldTest)
