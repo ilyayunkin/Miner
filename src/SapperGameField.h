@@ -26,6 +26,26 @@ class SapperGameField : public QObject
 {
     Q_OBJECT
 
+public:
+    SapperGameField(int side, int mines, const QPoint &freeCell,
+                    QObject *parent = 0);
+    ~SapperGameField();
+
+    void click(const QPoint &point);
+    int getFieldSide();
+    void toggleFlag(const QPoint &point);
+    Flag getFlag(const QPoint &point)const;
+    bool isOpended(const QPoint &point)const;
+    bool isMined(const QPoint &point)const;
+    bool isExploded(const QPoint &point)const;
+    int getNeiMines(const QPoint &point)const;
+
+    int getEstimatedFlags() const;
+signals:
+    void bombed();
+    void win();
+
+private:
     mutable std::default_random_engine randomEngine;
     /// Count of cells per row / col.
     const int side;
@@ -65,27 +85,6 @@ class SapperGameField : public QObject
 
     void toggleFlag(FieldCell &cell);
     bool areNeighbors(const QPoint &point1, const QPoint &point2) const;
-
-public:
-    SapperGameField(int side, int mines, const QPoint &freeCell,
-                    QObject *parent = 0);
-    ~SapperGameField();
-
-    void click(const QPoint &point);
-    void toggleFlag(const QPoint &point);
-    Flag getFlag(const QPoint &point)const;
-    bool isOpended(const QPoint &point)const;
-    bool isMined(const QPoint &point)const;
-    bool isExploded(const QPoint &point)const;
-    int getNeiMines(const QPoint &point)const;
-
-    int getEstimatedFlags() const;
-signals:
-    void bombed();
-    void win();
-
-public slots:
-
 };
 
 #endif // SAPPERGAMEFIELD_H

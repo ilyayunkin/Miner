@@ -207,6 +207,11 @@ void SapperGameField::click(const QPoint &point)
     }
 }
 
+int SapperGameField::getFieldSide()
+{
+    return side;
+}
+
 Flag SapperGameField::getFlag(const QPoint &point) const
 {
     return getCell(point).flag;
