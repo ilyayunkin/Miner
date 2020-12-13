@@ -1,6 +1,8 @@
 #ifndef SAPPER_H
 #define SAPPER_H
 
+#include <memory>
+
 #include <QObject>
 #include <QPoint>
 
@@ -11,12 +13,9 @@ class SapperPrivate;
 class Sapper : public QObject
 {
     Q_OBJECT
-
-    const int side;
-    const int mines;
-    SapperPrivate *privateMembers;
 public:
     Sapper(int side, int mines, QObject *parent = 0);
+    ~Sapper();
     int getSide() const;
     void click(const QPoint &point);
     /**
@@ -50,7 +49,10 @@ signals:
 
 public slots:
     void restartSlot();
-
+private:
+    const int side;
+    const int mines;
+    std::unique_ptr<SapperPrivate> privateMembers;
 };
 
 #endif // SAPPER_H

@@ -16,7 +16,7 @@
 #include "SapperFieldWidget.h"
 #include "ChampionsTable.h"
 
-SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
+SapperWidget::SapperWidget(Sapper &sapper, QWidget *parent) :
     QMainWindow(parent),
     sapper(sapper),
     timeSeconds(0)
@@ -27,7 +27,7 @@ SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
             QAction *restartAction = new QAction("Restart", this);
             gameMenu->addAction(restartAction);
             connect(restartAction, SIGNAL(triggered()),
-                    sapper, SLOT(restartSlot()));
+                    &sapper, SLOT(restartSlot()));
             connect(restartAction, SIGNAL(triggered()),
                     SLOT(restartSlot()));
         }
@@ -60,8 +60,8 @@ SapperWidget::SapperWidget(Sapper * sapper, QWidget *parent) :
         }
         mainLayout->addWidget(new SapperFieldWidget(sapper));
     }
-    connect(sapper, SIGNAL(bombed()), SLOT(bombed()));
-    connect(sapper, SIGNAL(win()), SLOT(win()));
+    connect(&sapper, SIGNAL(bombed()), SLOT(bombed()));
+    connect(&sapper, SIGNAL(win()), SLOT(win()));
 
     QTimer *timer = new QTimer(this);
     timer->start(100);
@@ -89,13 +89,13 @@ void SapperWidget::win()
 
     QMessageBox::about(0, "You win!", "You win!");
     ChampionsTable table("Ilya Yunkin", "Sapper", 5, false);
-    table.setResult(sapper->getTimeSeconds());
+    table.setResult(sapper.getTimeSeconds());
 }
 
 void SapperWidget::update()
 {
-    flagsEstimationLcd->display(sapper->getEstimatedFlags());
-    timerLcd->display(sapper->getTimeSeconds());
+    flagsEstimationLcd->display(sapper.getEstimatedFlags());
+    timerLcd->display(sapper.getTimeSeconds());
 }
 
 void SapperWidget::restartSlot()

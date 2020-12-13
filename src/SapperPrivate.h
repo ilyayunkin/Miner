@@ -1,17 +1,21 @@
 #ifndef SAPPERPRIVATE_H
 #define SAPPERPRIVATE_H
 
+#include <memory>
+
 #include <QObject>
 #include <QDateTime>
 #include <QTimer>
 
-#include "SapperGameField.h"
+#include "FlagState.h"
 
+class SapperGameField;
 class SapperPrivate : public QObject
 {
     Q_OBJECT
 public:
     explicit SapperPrivate(int side, int mines, QObject *parent = 0);
+    ~SapperPrivate();
     int getSide()const;
     int getEstimatedFlags() const;
 
@@ -37,7 +41,7 @@ private:
     const int side;
     const int mines;
     int time;
-    SapperGameField *gameField;
+    std::unique_ptr<SapperGameField> gameField;
     QDateTime startTime;
     QTimer *timer;
     void createFieldAndTimer(const QPoint &point);

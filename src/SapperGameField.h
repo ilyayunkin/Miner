@@ -25,7 +25,6 @@ struct FieldCell
 class SapperGameField : public QObject
 {
     Q_OBJECT
-
 public:
     SapperGameField(int side, int mines, const QPoint &freeCell,
                     QObject *parent = 0);

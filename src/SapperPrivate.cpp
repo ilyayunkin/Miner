@@ -1,5 +1,7 @@
 #include "SapperPrivate.h"
 
+#include "SapperGameField.h"
+
 #include <assert.h>
 
 SapperPrivate::SapperPrivate(int side, int mines, QObject *parent) :
@@ -10,6 +12,10 @@ SapperPrivate::SapperPrivate(int side, int mines, QObject *parent) :
     gameField(nullptr),
     startTime(QDateTime::currentDateTime()),
     timer(nullptr)
+{
+}
+
+SapperPrivate::~SapperPrivate()
 {
 }
 
@@ -31,9 +37,9 @@ void SapperPrivate::createFieldAndTimer(const QPoint &point)
 {
     assert(timer == nullptr);
     assert(gameField == nullptr);
-    gameField = new SapperGameField(side, mines, point, this);
-    connect(gameField, SIGNAL(bombed()), SLOT(bombedSlot()));
-    connect(gameField, SIGNAL(win()), SLOT(winSlot()));
+    gameField.reset(new SapperGameField(side, mines, point, this));
+    connect(gameField.get(), SIGNAL(bombed()), SLOT(bombedSlot()));
+    connect(gameField.get(), SIGNAL(win()), SLOT(winSlot()));
 
     timer = new QTimer(this);
     timer->start(100);

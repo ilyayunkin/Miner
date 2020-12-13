@@ -8,8 +8,12 @@ Sapper::Sapper(int side, int mines, QObject *parent) :
     mines(mines),
     privateMembers(new SapperPrivate(side, mines, this))
 {
-    connect(privateMembers, SIGNAL(bombed()), SIGNAL(bombed()));
-    connect(privateMembers, SIGNAL(win()), SIGNAL(win()));
+    connect(privateMembers.get(), SIGNAL(bombed()), SIGNAL(bombed()));
+    connect(privateMembers.get(), SIGNAL(win()), SIGNAL(win()));
+}
+
+Sapper::~Sapper()
+{
 }
 
 int Sapper::getSide() const
@@ -26,7 +30,6 @@ int Sapper::getTimeSeconds()const
 {
     return privateMembers->getTimeSeconds();
 }
-
 
 void Sapper::click(const QPoint &point)
 {
@@ -65,8 +68,7 @@ int Sapper::getNeighborMines(const QPoint &point)const
 
 void Sapper::restartSlot()
 {
-    delete privateMembers;
-    privateMembers = new SapperPrivate(side, mines, this);
-    connect(privateMembers, SIGNAL(bombed()), SIGNAL(bombed()));
-    connect(privateMembers, SIGNAL(win()), SIGNAL(win()));
+    privateMembers.reset(new SapperPrivate(side, mines, this));
+    connect(privateMembers.get(), SIGNAL(bombed()), SIGNAL(bombed()));
+    connect(privateMembers.get(), SIGNAL(win()), SIGNAL(win()));
 }

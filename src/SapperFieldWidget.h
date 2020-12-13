@@ -8,8 +8,10 @@
 class SapperFieldWidget : public QWidget
 {
     Q_OBJECT
-
-    Sapper *sapper;
+public:
+    SapperFieldWidget(Sapper &sapper, QWidget *parent = 0);
+private:
+    Sapper &sapper;
 
     float plotToWidgetScale;
     float widgetToPlotScale;
@@ -17,15 +19,11 @@ class SapperFieldWidget : public QWidget
     int horizontalBorder;
     int verticalBorder;
 
-    /**
-     * @brief Pixels count in side of one cell rect
-     */
+    /// @brief Pixels count in side of one cell rect/
     const int cellWidth;
 
     int margin;
-    /**
-     * @brief Pixels count in smaller side of widget
-     */
+    /// @brief Pixels count in smaller side of widget
     const int plotWidth;
 
     void paintEvent(QPaintEvent *e);
@@ -38,14 +36,6 @@ class SapperFieldWidget : public QWidget
     void drawDoubtFlag(QPainter &p, int x, int y);
 
     QColor getCellColor(const QPoint &point);
-
-public:
-    SapperFieldWidget(Sapper *sapper, QWidget *parent = 0);
-
-signals:
-
-public slots:
-
 };
 
 #endif // SAPPERFIELDWIDGET_H
