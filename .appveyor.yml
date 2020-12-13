@@ -1,27 +1,51 @@
 image:
-  - Visual Studio 2019
+  - Ubuntu
+  - Visual Studio 2015
+  
+skip_commits:
+  files:
+    - README.md
+    - .travis.yml
+    - .gitignore
+    #- LICENSE
   
 branches:
   only:
     - master
     
 install:
-  - set QTDIR=C:\Qt\5.14.2\mingw73_32
-  - set QT_TOOLS_DIR=C:\Qt\Tools\mingw730_32\ 
-  - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw730_32\bin;%PATH%
-  - qmake -v  
+  - cmd: set QT_LICENSES=C:\Qt\Licenses
+  - cmd: set QTDIR=C:\Qt\5.13\mingw73_32
+  - cmd: set QT_TOOLS_DIR=C:\Qt\Tools\mingw730_32\ 
+  - cmd: set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw730_32\bin;%PATH%
+  - sh: PATH=$HOME/Qt/5.14.2/gcc_64/bin:$PATH
+  - sh: sudo apt-get install -y libgl-dev
+  - qmake -v
   
 build_script:
-  - qmake src/Sapper.pro
-  - mingw32-make
+  - cmd: qmake 
+  - cmd: mingw32-make
+  - sh: qmake CONFIG+="debug" QMAKE_LFLAGS+="--coverage" QMAKE_CXXFLAGS+="--coverage"
+  - sh: make
   
 after_build:
-  - mkdir Sapper
-  - mv release/Sapper.exe Sapper
-  - windeployqt Sapper/Sapper.exe
-  - dir
-  - dir Sapper
+  - cmd: mkdir Sapper
+  - cmd: mv src/release/Sapper.exe Sapper
+  - cmd: windeployqt Sapper/Sapper.exe
+  - cmd: dir
+  - cmd: dir Sapper
+  - sh: ls
+  #- sh: cp LICENSE bin
+  #- sh: cp README.md bin
+  #- sh: cp -r bin Sapper
 
+test_script:
+  - cmd: qmake 
+  - cmd: mingw32-make check
+  - sh: make check
+  - sh: rm ./SapperTests/*/tst_*.gc*
+  - sh: bash <(curl -s https://codecov.io/bash) -v
+  
 #Note: artifacts path should be from root directory
 artifacts:
   - path: Sapper
